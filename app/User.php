@@ -38,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+
     /**
      * The attributes that should be cast to native types.
      *

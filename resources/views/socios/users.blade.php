@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label for="selectType" class="mr-sm-2">Tipo Sócio</label>
-                <select name="type" id="selectTipo" class="custom-select mb-2 mr-sm-2 mb-sm-0">
+                <select name="tipo_socio" id="selectTipo" class="custom-select mb-2 mr-sm-2 mb-sm-0">
                     <option disabled selected>Escolhe Tipo</option>
                     <option value="P">Piloto</option>
                     <option value="NP">Não Piloto</option>

@@ -90,6 +90,26 @@ class UserController extends Controller
             $users = $users->where('direcao', $request->direcao);
         }
 
+        if(isset($_GET["tipo_socio"])){
+            $tipoSocio = $_GET["tipo_socio"];
+
+            //$tipoSocioProcurar = User::where('tipo_socio','like','$tipoSocioProcurar')->get();
+
+            //$users = $users->$tipoSocioProcurar;
+
+            $users = $users->where('tipo_socio', $request->$tipoSocio);
+
+            dd($tipoSocio);
+        }
+
+        if(isset($_GET["direcao"])){
+            $direcao = $_GET["direcao"];
+
+            $direcaoProcurar = User::where('direcao','like',$direcao)->get();
+
+            $users = $users->where('direcao', $request->$direcaoProcurar);
+        }
+
         $users = $users->orderBy('num_socio', 'asc')
             ->orderBy('num_socio')
             ->paginate(20);
