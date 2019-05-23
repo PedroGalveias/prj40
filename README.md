@@ -1,2 +1,1 @@
-# prj40
-Projeto Laravel de Gestão
+ainetProj40
