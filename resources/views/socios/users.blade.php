@@ -26,14 +26,20 @@
                     <option disabled selected>Escolhe Tipo</option>
                     <option value="P">Piloto</option>
                     <option value="NP">Não Piloto</option>
+                    <option value="A">Aeromodelista</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="selectDirecao" class="mr-sm-2">Direção</label>
-                <input type="checkbox" name="direcao" id="selectDirecao"
-                       class="form-control mb-2 mr-sm-2 mb-sm-0" value="{{ old('direcao') }}">
+                <select name="direcao" id="selectDirecao"
+                        class="form-control">
+                    <option disabled selected>Escolhe Direcao</option>
+                    <option value="1">Sim</option>
+                    <option value="0">Não</option>
+                </select>
             </div>
+
 
             <button type="submit" class="btn btn-pr">Apply Filter</button>
 

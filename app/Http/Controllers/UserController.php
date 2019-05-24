@@ -62,248 +62,31 @@ class UserController extends Controller
 
     public static function filter(Request $request)
     {
-        // TODO
+        if($users = User::where('num_socio', '<>', -1)){
 
-        // P - Piloto
-        // NP - Não Piloto (Normal)
-        // New Version of Filter
+            if ($request->filled('email')) {
+                $users = $users->where('email', $request->email);
+            }
+            if ($request->filled('tipo_socio')) {
+                $users = $users->where('tipo_socio', $request->tipo_socio);
+            }
+            if ($request->filled('num_socio')) {
 
+                $users = $users->where('num_socio', $request->num_socio);
+            }
+            if ($request->filled('nome_informal')) {
+                $users = $users->where('nome_informal', $request->nome_informal);
+            }
 
-        $users = User::where('num_socio', '<>', -1);
-
-
-        if ($request->filled('email')) {
-            $users = $users->where('email', $request->email);
+            if($request->input('direcao')){
+                $users = $users->where('direcao', $request->direcao);
+            }
         }
-        if ($request->filled('tipo_socio')) {
-            $users = $users->where('tipo_socio', $request->tipo_socio);
-        }
-        if ($request->filled('num_socio')) {
-
-            $users = $users->where('num_socio', $request->num_socio);
-        }
-        if ($request->filled('nome_informal')) {
-            $users = $users->where('nome_informal', $request->nome_informal);
-        }
-
-        if($request->input('direcao')){
-            $users = $users->where('direcao', $request->direcao);
-        }
-
-        if(isset($_GET["tipo_socio"])){
-            $tipoSocio = $_GET["tipo_socio"];
-
-            //$tipoSocioProcurar = User::where('tipo_socio','like','$tipoSocioProcurar')->get();
-
-            //$users = $users->$tipoSocioProcurar;
-
-            $users = $users->where('tipo_socio', $request->$tipoSocio);
-
-            dd($tipoSocio);
-        }
-
-        if(isset($_GET["direcao"])){
-            $direcao = $_GET["direcao"];
-
-            $direcaoProcurar = User::where('direcao','like',$direcao)->get();
-
-            $users = $users->where('direcao', $request->$direcaoProcurar);
-        }
-
         $users = $users->orderBy('num_socio', 'asc')
             ->orderBy('num_socio')
             ->paginate(20);
 
         return $users;
-
-            dd($users);
-        // V.1
-
-        /**
-         * // se nada estiver prenchido
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * return User::paginate(10);
-         * }
-         *
-         * // se tipo_socio invalido
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email') && !$request->filled('direcao')
-         * && ($request->filled('tipo_socio') != 'P' && $request->query('tipo_socio') != 'NP')) {
-         * return User::paginate(10);
-         * }
-         *
-         *
-         * // só Piloto
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email') && !$request->filled('direcao')
-         * && !$request->filled('tipo_socio') && $request->filled('tipo_socio') && $request->query('tipo_socio') == 'P') {
-         * return User::where('P', '=', true)->paginate(10);
-         * }
-         *
-         * // só Não-Piloto
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email') && !$request->filled('direcao')
-         * && !$request->filled('tipo_socio') && $request->filled('tipo_socio') && $request->query('tipo_socio') == 'NP') {
-         * return User::where('NP', '=', true)->paginate(10);
-         * }
-         *
-         * // só direcao
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email')
-         * && !$request->filled('tipo_socio') && $request->filled('direcao')) {
-         * return User::where('direcao', '=', true)->paginate(10);
-         * }
-         *
-         * //só email
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && $request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * return User::where('email', 'like', '%' . $request->query('email') . '%')->paginate(10);
-         * }
-         *
-         * //só nome_informal
-         * if (!$request->filled('num_socio') && $request->filled('nome_informal') && !$request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * return User::where('nome_informal', 'like', '%' . $request->query('nome_informal') . '%')->paginate(10);
-         * }
-         *
-         * // só numSocio
-         * if ($request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * return User::where('num_socio', 'like', '%' . $request->query('num_socio') . '%')->paginate(10);
-         * }
-         *
-         *
-         * //nome+não-piloto
-         * if (!$request->filled('num_socio') && $request->filled('nome_informal') && !$request->filled('email')
-         * && $request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * //'não-piloto'
-         * if ($request->query('tipo_socio') == 'NP') {
-         * return User::where('name', 'like', '%' . $request->query('name') . '%')->where('NP', '=', true)->paginate(10);
-         * }
-         * }
-         *
-         * //nome+piloto
-         * if (!$request->filled('num_socio') && $request->filled('nome_informal') && !$request->filled('email')
-         * && $request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * //'não-piloto'
-         * if ($request->query('tipo_socio') == 'P') {
-         * return User::where('name', 'like', '%' . $request->query('name') . '%')->where('P', '=', true)->paginate(10);
-         * }
-         * }
-         *
-         *
-         * //nome + email
-         * if (!$request->filled('num_socio') && $request->filled('nome_informal') && $request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         *
-         * $fields = ['nome_informal', 'email'];
-         * foreach ($fields as $field) {
-         * if (!empty($request->$field)) {
-         * $query->where($field, '=', $request->$field);
-         * }
-         * }
-         * }
-         *
-         * //nome + email
-         * if (!$request->filled('num_socio') && $request->filled('nome_informal') && $request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         *
-         * $fields = ['nome_informal', 'email'];
-         * foreach ($fields as $field) {
-         * if (!empty($request->$field)) {
-         * return User::where($query->where($field, '=', $request->$field));
-         * }
-         * }
-         * }
-         * //nome + num_socio
-         * if ($request->filled('num_socio') && $request->filled('nome_informal') && !$request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * $fields = ['nome_informal', 'num_socio'];
-         * foreach ($fields as $field) {
-         * if (!empty($request->$field)) {
-         * return User::where($query->where($field, '=', $request->$field));
-         * }
-         * }
-         * }
-         *
-         * //email + num_socio
-         * if ($request->filled('num_socio') && !$request->filled('nome_informal') && $request->filled('email')
-         * && !$request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * $fields = ['email', 'num_socio'];
-         * foreach ($fields as $field) {
-         * if (!empty($request->$field)) {
-         * return User::where($query->where($field, '=', $request->$field));
-         * }
-         * }
-         * }
-         *
-         * //nome + direcao
-         * if (!$request->filled('num_socio') && $request->filled('nome_informal') && !$request->filled('email')
-         * && !$request->filled('tipo_socio') && $request->filled('direcao')) {
-         * if (Request::get('direcao')) {
-         * return User::where('nome_informal', 'like', '%' . $request->query('nome_informal') . '%')->where('direcao', '=', true)->paginate(10);
-         * }
-         *
-         * }
-         *
-         * //email + direcao
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && $request->filled('email')
-         * && !$request->filled('tipo_socio') && $request->filled('direcao')) {
-         * if (Request::get('direcao')) {
-         * return User::where('email', 'like', '%' . $request->query('email') . '%')->where('direcao', '=', true)->paginate(10);
-         * }
-         *
-         * }
-         *
-         *
-         * //email + tipo
-         * if (!$request->filled('num_socio') && !$request->filled('nome_informal') && $request->filled('email')
-         * && $request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * //piloto
-         * if ($request->query('tipo_socio') == 'P') {
-         * return User::where('email', 'like', '%' . $request->query('email') . '%')->where('P', '=', true)->paginate(10);
-         * } else {
-         * //não-piloto
-         * return User::where('email', 'like', '%' . $request->query('email') . '%')->where('NP', '=', false)->paginate(10);
-         * }
-         *
-         * }
-         *
-         * //tipo + direcao
-         * if (!$request->filled('num_socio') && $request->filled('nome_informal') && $request->filled('email')
-         * && !$request->filled('tipo_socio') && $request->filled('direcao')) {
-         * if (Request::get('direcao')) {
-         * if ($request->query('tipo_socio') == 'P') {
-         * return User::where('name', 'like', '%' . $request->query('num_socio') . '%')->where('P', '=', true)->where('direcao', '=', true)->paginate(10);
-         * } else {
-         * //não-piloto
-         * return User::where('name', 'like', '%' . $request->query('num_socio') . '%')->where('NP', '=', true)->where('direcao', '=', true)->paginate(10);
-         * }
-         * }
-         *
-         * }
-         *
-         *
-         * //tipo + num_socio
-         * if ($request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email')
-         * && $request->filled('tipo_socio') && !$request->filled('direcao')) {
-         * //piloto
-         * if ($request->query('tipo_socio') == 'P') {
-         * return User::where('name', 'like', '%' . $request->query('num_socio') . '%')->where('P', '=', true)->paginate(10);
-         * } else {
-         * //não-piloto
-         * return User::where('name', 'like', '%' . $request->query('num_socio') . '%')->where('NP', '=', false)->paginate(10);
-         * }
-         *
-         * }
-         *
-         *
-         * //direcao + num_socio
-         * if ($request->filled('num_socio') && !$request->filled('nome_informal') && !$request->filled('email')
-         * && !$request->filled('tipo_socio') && $request->filled('direcao')) {
-         * if (Request::get('direcao')) {
-         * return User::where('num_socio', 'like', '%' . $request->query('num_socio') . '%')->where('direcao', '=', true)->paginate(10);
-         * }
-         * }
-         *
-         * **/
     }
 
 
