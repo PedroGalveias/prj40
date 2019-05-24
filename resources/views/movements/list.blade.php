@@ -25,6 +25,17 @@
                 <input type="text" name="instrutor_id" id="inputInstrutor_id" placeholder=" Enter ID Instrutor"
                        class="form-control mb-2 mr-sm-2 mb-sm-0" value="{{ old('instrutor_id') }}">
             </div>
+            <!-- DATA -->
+            <div class="form-group">
+                <label for="inputDataInicio" class="mr-sm-2">Data Inicio</label>
+                <input type="date" name="dataInicio" id="data" placeholder=" Enter Data Inicio"
+                       class="form-control mb-2 mr-sm-2 mb-sm-0" value="{{ old('data') }}">
+            </div>
+            <div class="form-group">
+                <label for="inputDataFinal" class="mr-sm-2">Data Final</label>
+                <input type="date" name="dataFinal" id="data" placeholder=" Enter Data Final"
+                       class="form-control mb-2 mr-sm-2 mb-sm-0" value="{{ old('data') }}">
+            </div>
             <div class="form-group">
                 <label for="selectType" class="mr-sm-2">Natureza</label>
                 <select name="natureza" id="selectNatureza" class="custom-select mb-2 mr-sm-2 mb-sm-0">

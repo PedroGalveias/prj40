@@ -75,7 +75,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-5 col-sm-6">
-                                <input type="submit" class="btn btn-success" name="ok" href="{{route('socios', ['id'=>$user->id])}}" value="guardar">
+                                <input type="submit" class="btn btn-success" name="ok" href="{{route('socios.create', ['id'=>$user->id])}}" value="guardar">
                                 <a class="btn btn-primary" href="{{action('UserController@index')}}">voltar</a>
 
                             </div>

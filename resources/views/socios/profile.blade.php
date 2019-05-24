@@ -10,7 +10,7 @@
 
                         <div class="profile-header-container">
                             <div class="profile-header-img">
-                                <img class="rounded-circle" src= asset("/storage/fotos/{{ $user->foto_url}});" />
+                                <img class="rounded-circle" src=asset("/storage/fotos/{{ $user->foto_url}});"/>
                                 <!-- badge -->
                                 <div class="rank-label-container">
                                     <span class="label label-default rank-label">{{$user->name}}</span>
@@ -21,7 +21,8 @@
 
                     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
 
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
@@ -29,15 +30,23 @@
                             <ul class="navbar-nav">
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <li>
-                                    <a class="nav-link" href="{{action('UserController@edit',['user' => Auth::user()->id])}}"><strong>Alterar perfil</strong></a>
+                                    <a class="nav-link"
+                                       href="{{action('UserController@edit',['user' => Auth::user()->id])}}"><strong>Alterar
+                                            perfil</strong></a>
                                 </li>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <li>
-                                    <a class="nav-link" href="{{action('UserController@showChangePasswordForm')}}"><strong>Mudar Palavra-passe</strong></a>
+                                    <a class="nav-link"
+                                       href="{{action('UserController@showChangePasswordForm')}}"><strong>Mudar
+                                            Palavra-passe</strong></a>
                                 </li>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <li>
                                     <a class="nav-link" href="{{action('HomeController@index')}}"><strong>home</strong></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="{{action('UserController@tabelaAeronavePreço')}}"><strong>Tabela
+                                            Preços/Hora Aeronave</strong></a>
                                 </li>
 
                             </ul>
@@ -73,7 +82,7 @@
                             <td> @if(Auth::user()->tipo_socio == 'A')
                                     aeromodelista
                                 @elseif(Auth::user()->tipo_socio == 'P')
-                                   piloto
+                                    piloto
                                 @else
                                     não piloto
                                 @endif </td>
@@ -116,7 +125,7 @@
                     </table>
 
                 </div>
-                </div>
             </div>
         </div>
+    </div>
 @endsection

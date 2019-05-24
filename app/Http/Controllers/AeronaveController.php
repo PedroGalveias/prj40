@@ -6,6 +6,7 @@ use App\Aeronave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\double;
 
 class AeronaveController extends Controller
 {
@@ -13,21 +14,14 @@ class AeronaveController extends Controller
     public function index()
     {
 
-        if( Auth::check() )
-        {
-            $aeronaves = Aeronave::orderBy('matricula','asc')->paginate(10);
-
-
-        }
-        else{
+        if (Auth::check()) {
+            $aeronaves = Aeronave::orderBy('matricula', 'asc')->paginate(10);
+        } else {
 
             return Response(view('errors.403'), 403);
         }
 
-
-        // return view('posts.index')->with('posts', $posts);
-
-        return view('aeronaves.list',compact('aeronaves'))->with('aeronaves',$aeronaves);
+        return view('aeronaves.list', compact('aeronaves'))->with('aeronaves', $aeronaves);
     }
 
 
@@ -41,8 +35,35 @@ class AeronaveController extends Controller
 
     public function store(Request $request)
     {
-        $aeronave = new Aeronave();
+        if ($request->has('cancel')) {
+            return redirect()->action('AeronvaveController@index');
+        }
 
+        $validatedData = $request->validate([
+            'matricula' => 'required|unique:aeronaves,matricula|regex:/[A-Za-z]{3}-[0-9]{3}/',
+            'marca' => 'required|regex:/(^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÒÖÚÇÑ ]+$)+/',
+            'modelo' => 'required|regex:/(^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÒÖÚÇÑ ]+$)+/',
+            'numLugares' => 'required|integer|between:1,4',
+            'conta_horas' => 'required|integer',
+            'preco_hora' => 'required|integer',
+        ], [
+            'numLugares.required' => 'Número de lugares não pode estar vazio',
+            'numLugares.regex' => 'Número de lugares deve ser entre 1-4!',
+            'matricula.required' => 'Matrícula não pode estar vazia',
+            'matricula.regex' => 'Número de lugares deve ser entre 1-4!',
+            'matricula.unique' => 'Esta matricula já se encontra registado',
+            'marca.required' => 'Marca não pode estar vazia',
+            'marca.regex' => 'Marca deve apenas ter letras e espaços',
+            'modelo.required' => 'Modelo não pode estar vazio',
+            'modelo.regex' => 'Modelo deve apenas ter letras e espaços',
+        ]);
+
+
+        if ($validatedData->fails()) {
+            return Redirect::back()->withErrors($validatedData);
+        }
+
+        $aeronave = new Aeronave();
         $aeronave->fill($request->all());
         $aeronave->save();
 
@@ -58,30 +79,31 @@ class AeronaveController extends Controller
 
     public function edit($matricula)
     {
-        $aeronave=Aeronave::findOrFail($matricula);
-        return view('aeronaves.edit',compact('aeronave'));
+        $aeronave = Aeronave::findOrFail($matricula);
+        return view('aeronaves.edit', compact('aeronave'));
 
     }
 
 
-    public function update(Request $request,Aeronave $aeronave)
+    public function update(Request $request, Aeronave $aeronave)
     {
+        if ($request->has('cancel')) {
+            return redirect()->action('AeronaveController@index');
+        }
 
-        $rules = array(
-            'matricula'       => 'required',
-            'marca'      => 'required',
-            'modelo' => 'required'
-        );
-        $this->aeronave = $aeronave;
+        $this->validate($request, [
+            'conta_horas' => 'required|integer',
+            'preco_hora' => 'required|integer',
+        ]);
 
-        //$this->validate($request,$rules);
-        $matricula = $request->input('matricula');
-        $aeronave = Aeronave::find($matricula);
+        if ($this->fails()) {
+            return Redirect::back()->withErrors($this);
+        }
+
         $aeronave->fill($request->all());
         $aeronave->save();
-
-        return redirect()->route('aeronaves.index');
-
+        
+        return redirect()->action('AeronaveController@index');
     }
 
 

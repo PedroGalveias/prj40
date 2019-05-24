@@ -11,7 +11,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-    <form method="POST" action="{{route('socios',$user)}}" encrypte="multipart/form-data">
+    <form method="POST" action="{{route('socios.update',['id'=>$user->id])}}" encrypte="multipart/form-data">
 
     @method('PUT')
 
@@ -52,7 +52,7 @@
     <div class="form-group">
         <label for="email" class="col-sm-4 col-form-label"> Email </label>
         <div class="col-sm-10">
-            <input type="email" name="email" class="form-control" id="Email" placeholder="Email" value="{{old('email', $user->email)}}" />
+            <input type="text" name="email" class="form-control" id="email" placeholder="email" value="{{old('email', $user->email)}}" />
         </div>
     </div>
 

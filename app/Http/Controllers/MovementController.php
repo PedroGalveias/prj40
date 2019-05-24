@@ -75,17 +75,20 @@ class MovementController extends Controller
                 $movimentos = $movimentos->where('instrutor_id', $request->instrutor_id);
             }
 
-            if ($request->input('natureza')) {
+            if ($request->filled('natureza')) {
                 $movimentos = $movimentos->where('natureza', $request->natureza);
             }
 
-            if ($request->input('data')) {
-                $movimentos = $movimentos->where('data', $request->data);
+            if ($request->filled('data') || $request->filled('data')) {
+                $movimentos = $movimentos->whereBetween('natureza', ['from', 'to']);;
+
             }
 
-            if ($request->input('confirmado')) {
+            if ($request->filled('confirmado')) {
                 $movimentos = $movimentos->where('confirmado', $request->confirmado);
             }
+
+            dd($movimentos);
 
             $movimentos = $movimentos->orderBy('id', 'asc')
                 ->orderBy('id')

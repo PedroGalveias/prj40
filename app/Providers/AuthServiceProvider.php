@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         //so o utilizador por editar os seus dados
 
         Gate::define('edit-perfil', function ($userlogado, $user) {
-                return $userlogado->id == $user->id;
+
         });
 
         Gate::define('direcao', function ($user) {
