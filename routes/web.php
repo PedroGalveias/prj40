@@ -19,22 +19,17 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-Route::resource('socios', 'UserController');
-
-
-
-
+Route::resource('users', 'UserController')->except(['show']);
 Route::resource('movimentos', 'MovementController')->except(['show']);
 
-Route::resource('/aeronaves', 'AeronaveController')->parameters(['aeronaves'=>'aeronave'])->except(['show']);
-
+Route::resource('/aeronaves', 'AeronaveController')->except(['show']);
 //Route::get('/alterarPerfil/{id}', 'UserController@alterarPerfil')->name('alterarPerfil');
 
+Route::get('/PrecoHoraAeronave','AeronaveController@tablePriceHour');
+
+Route::get('/profile', 'UserController@profile');
 
 Route::get('/password','UserController@showChangePasswordForm');
-Route::get('/PrecoHoraAeronave','UserController@tabelaAeronavePreço');
 Route::post('/password','UserController@changePassword')->name('changePassword');
-Route::get('/profile', 'UserController@profile');
 Route::get('/pilotos/{piloto}/certificado', 'UserController@certificado')->name('certificado');
 Route::get('/pilotos/{piloto}/licenca', 'UserController@licenca')->name('licenca');

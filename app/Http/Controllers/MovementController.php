@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMovement;
 use App\Movement;
-
-use App\Http\Requests;
 use Illuminate\Http\Request;
 use Validator;
 use Debugbar;
 use Illuminate\Support\Facades\Auth;
+
 
 
 class MovementController extends Controller
@@ -22,7 +22,7 @@ class MovementController extends Controller
     {
         if (Auth::check()) {
             $movimentos = MovementController::filter($request);
-            //$movimentos = Movement::orderBy('created_at','asc')->paginate(10);
+
 
 
         } else {
@@ -35,28 +35,59 @@ class MovementController extends Controller
     }
 
 
+
+
     public function create()
     {
         $movimento = new Movement();
         return view('movements.add', compact('movimento'));
-        $this->authorize('create', Movement::class);
 
 
-        $validatedData = $request->validate([]);
-        $movimento = Movement::create($validatedData);
-
-        return redirect()->action('MovementController@index');
     }
 
-    public function store(Requests\StoreMovement $request)
+    public function store(StoreMovement $request)
     {
+
         $data = $request->validated();
 
-        $movimento = Movement::create($data);
+        $movimento=Movement::create($data);
 
         return redirect()->action('MovementController@index');
+
+
     }
 
+
+    public function show(Movement $movement)
+    {
+        //
+    }
+
+
+    public function edit($id)
+    {
+        $movimento=Movement::findOrFail($id);
+        return view('movements.edit',compact('movimento'));
+    }
+
+
+    public function update(Request $request,$id)
+    {
+
+       // $this->validate($request,[]);
+
+      //  $id = $request->input('id');
+        $movement = Movement::findOrFail($id);
+       // $movement = Movement::find($id);
+        $movement->fill($request->all());
+        $movement->save();
+
+
+
+        return redirect()->route('movimentos.index');
+
+
+    }
     public static function filter(Request $request)
     {
         if ($movimentos = Movement::where('id', '<>', -1)) {
@@ -88,7 +119,7 @@ class MovementController extends Controller
                 $movimentos = $movimentos->where('confirmado', $request->confirmado);
             }
 
-            dd($movimentos);
+
 
             $movimentos = $movimentos->orderBy('id', 'asc')
                 ->orderBy('id')
@@ -97,44 +128,9 @@ class MovementController extends Controller
         return $movimentos;
     }
 
-    public function show(Movement $movement)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        $movimento = Movement::findOrFail($id);
-        return view('movements.edit', compact('movimento'));
-    }
-
-
-    public function update(Request $request, $id)
-    {
-
-        if ($request->has('cancel')) {
-            return redirect()->action('MovementController@index');
-        }
-
-
-        // $this->validate($request,[]);
-
-        //  $id = $request->input('id');
-        $movement = Movement::findOrFail($id);
-        // $movement = Movement::find($id);
-        $movement->fill($request->all());
-        $movement->save();
-
-
-        return redirect()->route('movimentos.index');
-
-
-    }
-
-
     public function destroy($id)
     {
-        $movimento = Movement::findOrFail($id);
+        $movimento=Movement::findOrFail($id);
         $movimento->delete();
         return redirect()->back()->with('success', 'moviment deleted successfully!');
     }

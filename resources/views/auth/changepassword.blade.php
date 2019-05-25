@@ -21,7 +21,7 @@
                             {{ csrf_field() }}
 
 
-                            <div class="form-group{{ $errors->has('current-password') ? 'errors' : '' }}">
+                            <div class="form-group{{ $errors->has('current-password') ? ' has-error' : '' }}">
                                 <label for="new-password" class="col-md-4 control-label">Introduza palavra-passe</label>
 
                                 <div class="col-md-6">
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('new-password') ? 'errors' : '' }}">
+                            <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }}">
                                 <label for="new-password" class="col-md-4 control-label">Nova palavra-passe</label>
 
                                 <div class="col-md-6">

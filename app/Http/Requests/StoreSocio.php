@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Auth;
 class StoreSocio extends FormRequest
 {
     /**
@@ -24,13 +24,13 @@ class StoreSocio extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required', //|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'email'=>'required|email|unique:socios,email',
+            'name'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
+            'email'=>'required|email|unique:users,email,'. Auth::user()->id,
             'nome_informal'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
             'sexo'=>'required',
             'data_nascimento'=>'required|date',
-            'nif'=>'required|unique:socios,nif|numeric|max:999999999',
-            'telefone'=>'required|unique:socios,telefone|regex:/^\+?\d{3}(?: ?\d+)*$/',
+            'nif'=>'required|unique:users,integer|numeric|max:999999999',
+            'telefone'=>'required|unique:users,integer|regex:/^\+?\d{3}(?: ?\d+)*$/',
             'endereco'=>'required',
             'tipo_socio'=>'required',
             'file_foto'=>'nullable|image'

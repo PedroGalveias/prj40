@@ -2,22 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Aeronave;
-use Dotenv\Validator;
-
+use Validator;
 use Illuminate\Http\Request;
 use App\User;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-
-use App\Http\Requests;
-
-//use App\Http\Controllers\Providers\Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreSocio;
 
 
 class UserController extends Controller
@@ -30,7 +24,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if (Auth::check()) {
-            //$users = User::orderBy('num_socio','asc')->paginate(10);
+
             $users = UserController::filter($request);
 
 
@@ -38,11 +32,9 @@ class UserController extends Controller
 
             return Response(view('errors.403'), 403);
         }
-        //$socios = User::orderBy('num_socio','asc')->paginate(10);
 
-        // return view('posts.index')->with('posts', $posts);
 
-        return view('socios.users', compact('users'))->with('socios', $users);
+        return view('users.users', compact('users'))->with('users', $users);
     }
 
 
@@ -53,9 +45,121 @@ class UserController extends Controller
      */
     public function create()
     {
-        // $this->authorize('create', User::class);
         $user = new User();
-        return view('socios.add', compact('user'));
+        return view('users.add', compact('user'));
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreSocio $request)
+    {
+
+        $socio = $request->validated();
+
+        $num_socio = User::max('num_socio');
+        $socio['num_socio'] = ++$num_socio;
+        $socio['password'] = Hash::make($socio['data_nascimento']);
+        $user = User::create($socio);
+        $user->sendEmailVerificationNotification();
+
+
+        return redirect()->action('UserController@index');
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //nao é para fazer
+    }
+
+
+    public function edit(User $user)
+    {
+
+        return view('users.edit', compact('user'));
+    }
+
+
+    public function update(StoreSocio $request, User $user)
+    {
+
+
+        $rules = [
+            'name' => 'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
+            'email' => 'required|email|unique:users,email,' . user()->id . ',id',
+            'nome_informal' => 'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
+            'sexo' => 'required',
+            'data_nascimento' => 'required|date',
+            'nif' => 'required|integer|max:999999999',
+            'telefone' => 'required|long|regex:/^\+?\d{3}(?: ?\d+)*$/',
+            'endereco' => 'required',
+            'tipo_socio' => 'required',
+            'file_foto' => 'nullable|image'
+        ];
+
+
+        $validator = Validator::make($request, $rules);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
+
+        }
+        $fileCertificado = $request->file('certificate');
+
+        if ($fileCertificado != null) {
+            $validator['certificado_confirmado'] = 0;
+
+        }
+        if ($fileCertificado->isValid()) {
+
+
+            $certificadoNome = 'certificado_' . $user->id . '.' . $fileCertificado->getClientOriginalExtension();
+            Storage::disk('local')->putFileAs('app/docs_piloto/' . $user->id, $fileCertificado, $certificadoNome);
+        } else {
+            //if user has a certificate and want to change it
+
+
+        }
+
+        $name = $request->file_foto;
+
+        if ($name->isValid()) {
+            $name = $name->hashname();
+
+            Storage::disk('public')->putFileAs('fotos', request()->file('file_foto'), $name);
+        }
+        $keys = array_keys($validator, null, true);
+
+        foreach ($keys as $key) {
+            unset($validator[$key]);
+        }
+        $user->fill($validator);
+        $user->save();
+        return redirect()->action('UserController@index');
+
+        /*
+    $socioEdit = $request->validated();
+    dd($socioEdit);
+//        $request->profile_picture->storeAs('fotos', $socio->id.'_pic.jpg');
+
+    $keys = array_keys($socioEdit, null, true);
+
+    foreach ($keys as $key) {
+        unset($socioEdit[$key]);
+    }
+    */
+
 
     }
 
@@ -89,111 +193,6 @@ class UserController extends Controller
     }
 
 
-    public function store(Requests\StoreSocio $request)
-    {
-        /*
-        $this->validate($request,[
-            'name'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'email'=>'required|email|unique:socios,email',
-            'nome_informal'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'sexo'=>'required',
-            'data_nascimento'=>'required|date',
-            'nif'=>'required|unique:socios,nif|numeric|max:999999999',
-            'telefone'=>'required|unique:socios,telefone|regex:/^\+?\d{3}(?: ?\d+)*$/',
-            'endereco'=>'required',
-            'tipo_socio'=>'required',
-            'file_foto'=>'nullable|image'
-        ]);
-
-          $user = new User();
-
-        $user->fill($request->all());
-        $user->password = Hash::make($request->password);
-        $user->sendEmailVerificationNotification();
-        $user->save();*/
-
-//        $this->authorize('create', User::class);
-
-        $data = $request->validated();
-
-        $data['password'] = Hash::make($data['password']);
-
-
-        $user = User::create($data);
-
-        $user->sendEmailVerificationNotification();
-
-
-        return redirect()->action('UserController@index');
-
-
-    }
-
-
-    public function show($id)
-    {
-        //nao é para fazer
-    }
-
-
-    public function edit(User $user)
-    {
-
-
-        if (Auth::check()) {
-
-            return view('socios.edit', compact('user'));
-        } else {
-
-            return Response(view('errors.403'), 403);
-        }
-
-    }
-
-
-    public function update(Requests\StoreSocio $request, User $user)
-    {
-
-
-        $data = $request->validated();
-
-        dd($data);
-
-        $keys = array_keys($data, null, true);
-
-        foreach ($keys as $key) {
-            unset($data[$key]);
-        }
-
-
-        $user->fill($data);
-        $user->save();
-
-
-        $fileCertificado = $request->file('certificate');
-
-        if ($fileCertificado->isValid()) {
-
-
-            $name = 'certificado_' . $user->id . '.' . $fileCertificado->getClientOriginalExtension();
-            Storage::disk('local')->putFileAs('app/docs_piloto/' . $user->id, $fileCertificado, $name);
-        } else {
-            //if user has a certificate and want to change it
-
-
-        }
-
-        return redirect()->route('socios.index');
-        /*
-                $user->fill($request->except('password'));
-                 $user->save();
-
-
-                return redirect()->route('socios.index')->with('success', 'O seu perfil foi atualizado!');
-        */
-    }
-
-
     public function showChangePasswordForm()
     {
         return view('auth.changepassword');
@@ -203,11 +202,11 @@ class UserController extends Controller
     {
         if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
             // The passwords matches
-            return redirect()->back()->with("errors", "Your current password does not matches with the password you provided. Please try again.");
+            return redirect()->back()->with("error", "Your current password does not matches with the password you provided. Please try again.");
         }
         if (strcmp($request->get('current-password'), $request->get('new-password')) == 0) {
             //Current password and new password are same
-            return redirect()->back()->with("errors", "New Password cannot be same as your current password. Please choose a different password.");
+            return redirect()->back()->with("error", "New Password cannot be same as your current password. Please choose a different password.");
         }
         $validatedData = $request->validate([
             'current-password' => 'required',
@@ -231,7 +230,7 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        return view('socios.profile', compact('user', $user));
+        return view('users.profile', compact('user', $user));
     }
 
     public function certificado(User $piloto)
@@ -250,11 +249,4 @@ class UserController extends Controller
 
     }
 
-    public function tabelaAeronavePreço()
-    {
-
-        $records = DB::table('aeronaves_valores')->get();
-        return view('aeronaves.tablePrecoHora')->with('records', $records);
-
-    }
 }

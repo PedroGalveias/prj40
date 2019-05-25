@@ -15,7 +15,7 @@ class RegisterController extends Controller
     | Register Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles the registration of new socios as well as their
+    | This controller handles the registration of new users as well as their
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
@@ -24,7 +24,7 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect socios after registration.
+     * Where to redirect users after registration.
      *
      * @var string
      */
@@ -51,14 +51,14 @@ class RegisterController extends Controller
         return Validator::make($data, [
           // 'id' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:socios'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'num_socio' => ['required', 'int', 'max:11'],
           /*  'nome_informal' => ['required', 'string', 'max:255'],
             'sexo'=>  'required',
             'data_nascimento'=>  'required',
             'nif'=>  'nullable',
-            'telefone' => 'nullable|string|unique:socios|regex:/^(\+\d{2,3})?\s*\d{3}\s*\d{3}\s*\d{3}$/',
+            'telefone' => 'nullable|string|unique:users|regex:/^(\+\d{2,3})?\s*\d{3}\s*\d{3}\s*\d{3}$/',
 */
         ]);
     }

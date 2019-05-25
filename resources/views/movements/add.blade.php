@@ -2,10 +2,6 @@
 
 @section('content')
 
-    @if($errors->any())
-        @include('partials.errors')
-    @endif
-
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -14,21 +10,33 @@
                         {{csrf_field()}}
 
                         <div class="form-group">
+                            <label for="aeronave" class="col-sm-4 col-form-label"> num licenca piloto </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="num_licenca_piloto" class="form-control" id="num_licenca_piloto" placeholder="num_licenca_piloto" />
+
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="aeronave" class="col-sm-4 col-form-label"> Matricula aeronave </label>
                             <div class="col-sm-10">
                                 <input type="text" name="aeronave" class="form-control" id="aeronave" placeholder="aeronave" />
 
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="num_licenca_piloto" class="col-sm-4 col-form-label"> Nº licença Piloto</label>
+                            <label for="aeronave" class="col-sm-4 col-form-label"> Matricula aeronave </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_licenca_piloto" class="form-control" id="num_licenca_piloto" placeholder="num_licenca_piloto" />
+                                <input type="text" name="aeronave" class="form-control" id="aeronave" placeholder="aeronave" />
 
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="aeronave" class="col-sm-4 col-form-label"> Num_licenca piloto</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="aeronave" class="form-control" id="aeronave" placeholder="aeronave" />
 
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="data" class="col-sm-4 col-form-label"> Data </label>
                             <div class="col-sm-10">
@@ -166,17 +174,25 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="modo_pagamento" class="col-sm-4 col-form-label"> Modo de Pagamento </label>
+                            <label for="tipo_conflito" class="col-sm-4 col-form-label"> Tipo Conflito </label>
                             <div class="col-sm-10">
-                                <input type="text" name="modo_pagamento" class="form-control" id="modo_pagamento" placeholder="modo_pagamento"/>
+                                <input type="text" name="tipo_conflito" class="form-control" id="tipo_conflito" placeholder="tipo_conflito"/>
 
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="num_recibo" class="col-sm-4 col-form-label"> Nº do Recibo </label>
+                            <label for="justificacao_conflito" class="col-sm-4 col-form-label"> Justificação Conflito </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_recibo" class="form-control" id="num_recibo" placeholder="num_recibo"/>
+                                <input type="text" name="justificacao_conflito" class="form-control" id="justificacao_conflito" placeholder="justificacao_conflito"/>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmado" class="col-sm-4 col-form-label"> Confirmado </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="confirmado" class="form-control" id="confirmado" placeholder="confirmado" />
 
                             </div>
                         </div>

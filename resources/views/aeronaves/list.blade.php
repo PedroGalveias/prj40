@@ -22,9 +22,9 @@
                                 <th>matricula</th>
                                 <th>marca</th>
                                 <th>modelo</th>
-                                <th>num Lugares</th>
-                                <th>conta_horas</th>
-                                <th>preco_hora</th>
+                                <th>nº de lugares</th>
+                                <th>total de horas</th>
+                                <th>preço hora</th>
 
                             </tr>
                             </thead>
@@ -39,22 +39,22 @@
                                     <td>{{ $aeronave->num_lugares }}</td>
                                     <td>{{ $aeronave->conta_horas }}</td>
                                     <td>{{ $aeronave->preco_hora }}</td>
-
-                                    <td>
-                                        <a class="btn btn-primary" href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
-                                        <form action="{{action('AeronaveController@destroy', ['matricula' => $aeronave->matricula])}}" method="POST" role="form" class="inline">
-                                            {{ method_field('DELETE') }}
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-
+                                    @can('direcao', auth()->user())
+                                        <td>
+                                            <a class="btn btn-primary"
+                                               href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
+                                            <form action="{{action('AeronaveController@destroy', ['matricula' => $aeronave->matricula])}}"
+                                                  method="POST" role="form" class="inline">
+                                                {{ method_field('DELETE') }}
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                @endcan
                                 </tr>
-
                             @endforeach
                             <div class="row justify-content-center">{{ $aeronaves->links() }}   </div>
                     </div>
-
                 </div>
 
             </div>

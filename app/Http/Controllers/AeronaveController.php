@@ -4,22 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Aeronave;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Auth;
-use App\Rules\double;
 
 class AeronaveController extends Controller
 {
 
     public function index()
     {
+        $aeronaves = Aeronave::orderBy('matricula', 'asc')->paginate(20);
 
-        if (Auth::check()) {
-            $aeronaves = Aeronave::orderBy('matricula', 'asc')->paginate(10);
-        } else {
-
-            return Response(view('errors.403'), 403);
-        }
 
         return view('aeronaves.list', compact('aeronaves'))->with('aeronaves', $aeronaves);
     }
@@ -38,7 +32,6 @@ class AeronaveController extends Controller
         if ($request->has('cancel')) {
             return redirect()->action('AeronvaveController@index');
         }
-
         $validatedData = $request->validate([
             'matricula' => 'required|unique:aeronaves,matricula|regex:/[A-Za-z]{3}-[0-9]{3}/',
             'marca' => 'required|regex:/(^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÒÖÚÇÑ ]+$)+/',
@@ -57,16 +50,12 @@ class AeronaveController extends Controller
             'modelo.required' => 'Modelo não pode estar vazio',
             'modelo.regex' => 'Modelo deve apenas ter letras e espaços',
         ]);
-
-
         if ($validatedData->fails()) {
             return Redirect::back()->withErrors($validatedData);
         }
-
         $aeronave = new Aeronave();
         $aeronave->fill($request->all());
         $aeronave->save();
-
         return redirect()->action('AeronaveController@index');
     }
 
@@ -90,19 +79,16 @@ class AeronaveController extends Controller
         if ($request->has('cancel')) {
             return redirect()->action('AeronaveController@index');
         }
-
         $this->validate($request, [
             'conta_horas' => 'required|integer',
             'preco_hora' => 'required|integer',
         ]);
-
         if ($this->fails()) {
             return Redirect::back()->withErrors($this);
         }
-
         $aeronave->fill($request->all());
         $aeronave->save();
-        
+
         return redirect()->action('AeronaveController@index');
     }
 
@@ -113,5 +99,11 @@ class AeronaveController extends Controller
         $aeronave = Aeronave::findOrFail($matricula);
         $aeronave->delete();
         return redirect()->back()->with('success', 'User deleted successfully!');
+    }
+
+    public function tablePriceHour()
+    {
+        $records = DB::table('aeronaves_valores')->get();
+        return view('aeronaves.tablePriceHour')->with('records', $records);
     }
 }

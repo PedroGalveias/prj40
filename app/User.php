@@ -18,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','nome_informal', 'sexo', 'data_nascimento', 'tipo_socio',
+        'name', 'email', 'password','num_socio','nome_informal', 'sexo', 'data_nascimento', 'tipo_socio','direcao','nif',
     ];
 
     /**
@@ -31,14 +31,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 
-
-    public function isDirecao()
-    {
-        return $this->tipo_socio === '1';
-    }
-
-
-
     /**
      * The attributes that should be cast to native types.
      *
@@ -46,6 +38,5 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-
     ];
 }
