@@ -49,17 +49,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-          // 'id' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'num_socio' => ['required', 'int', 'max:11'],
-          /*  'nome_informal' => ['required', 'string', 'max:255'],
-            'sexo'=>  'required',
-            'data_nascimento'=>  'required',
-            'nif'=>  'nullable',
-            'telefone' => 'nullable|string|unique:users|regex:/^(\+\d{2,3})?\s*\d{3}\s*\d{3}\s*\d{3}$/',
-*/
         ]);
     }
 
@@ -71,27 +63,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-         if (isset($data['profile_photo'])) {
-            $imagem= $data['profile_photo'];
-            $nome = basename($imagem->store('profiles', 'public'));
-        } else {
-            $nome= null;
-        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'profile_photo' => $nome,
-            'phone' => $data['phone'] ?? null,
-
         ]);
-
-
-    }
-
-     protected function showRegistrationForm()
-    {
-        $pagetitle="Register";
-        return view('auth.register', compact('pagetitle'));
     }
 }

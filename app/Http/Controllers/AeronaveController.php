@@ -4,106 +4,117 @@ namespace App\Http\Controllers;
 
 use App\Aeronave;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
+
+use App\Http\Requests\UpdateAeronave;
+use App\Http\Requests\StoreAeronave;
 
 class AeronaveController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $aeronaves = Aeronave::orderBy('matricula', 'asc')->paginate(20);
+        if (Auth::check()) {
+            $aeronaves = Aeronave::orderBy('matricula', 'asc')->paginate(25);
+
+
+        } else {
+
+            return Response(view('errors.403'), 403);
+        }
 
 
         return view('aeronaves.list', compact('aeronaves'))->with('aeronaves', $aeronaves);
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         $aeronave = new Aeronave();
         return view('aeronaves.add', compact('aeronave'));
-        $this->authorize('create', Aeronave::class);
+
     }
 
-
-    public function store(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreAeronave $request)
     {
-        if ($request->has('cancel')) {
-            return redirect()->action('AeronvaveController@index');
-        }
-        $validatedData = $request->validate([
-            'matricula' => 'required|unique:aeronaves,matricula|regex:/[A-Za-z]{3}-[0-9]{3}/',
-            'marca' => 'required|regex:/(^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÒÖÚÇÑ ]+$)+/',
-            'modelo' => 'required|regex:/(^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÒÖÚÇÑ ]+$)+/',
-            'numLugares' => 'required|integer|between:1,4',
-            'conta_horas' => 'required|integer',
-            'preco_hora' => 'required|integer',
-        ], [
-            'numLugares.required' => 'Número de lugares não pode estar vazio',
-            'numLugares.regex' => 'Número de lugares deve ser entre 1-4!',
-            'matricula.required' => 'Matrícula não pode estar vazia',
-            'matricula.regex' => 'Número de lugares deve ser entre 1-4!',
-            'matricula.unique' => 'Esta matricula já se encontra registado',
-            'marca.required' => 'Marca não pode estar vazia',
-            'marca.regex' => 'Marca deve apenas ter letras e espaços',
-            'modelo.required' => 'Modelo não pode estar vazio',
-            'modelo.regex' => 'Modelo deve apenas ter letras e espaços',
-        ]);
-        if ($validatedData->fails()) {
-            return Redirect::back()->withErrors($validatedData);
-        }
-        $aeronave = new Aeronave();
-        $aeronave->fill($request->all());
-        $aeronave->save();
+        $aeronave = $request->validated();
+
+        Aeronave::create($aeronave);
+
         return redirect()->action('AeronaveController@index');
     }
 
-
-    public function show($id)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Aeronave $aeronave)
     {
-        //
+
     }
 
-
-    public function edit($matricula)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Aeronave $aeronave)
     {
-        $aeronave = Aeronave::findOrFail($matricula);
+        $title = "Editar Aeronave";
         return view('aeronaves.edit', compact('aeronave'));
-
     }
 
-
-    public function update(Request $request, Aeronave $aeronave)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateAeronave $request, Aeronave $aeronave)
     {
-        if ($request->has('cancel')) {
-            return redirect()->action('AeronaveController@index');
+
+        $matriculaEdit = $request->validated();
+
+        $keys = array_keys($matriculaEdit, null, true);
+
+        foreach ($keys as $key) {
+            unset($matriculaEdit[$key]);
         }
-        $this->validate($request, [
-            'conta_horas' => 'required|integer',
-            'preco_hora' => 'required|integer',
-        ]);
-        if ($this->fails()) {
-            return Redirect::back()->withErrors($this);
-        }
-        $aeronave->fill($request->all());
+        $aeronave->fill($matriculaEdit);
         $aeronave->save();
-
-        return redirect()->action('AeronaveController@index');
+        return redirect()->route('aeronaves.index');
     }
 
 
-    public function destroy($matricula)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Aeronave $aeronave)
     {
 
-        $aeronave = Aeronave::findOrFail($matricula);
         $aeronave->delete();
+       // Aeronave::destroy($aeronave->id);
         return redirect()->back()->with('success', 'User deleted successfully!');
-    }
-
-    public function tablePriceHour()
-    {
-        $records = DB::table('aeronaves_valores')->get();
-        return view('aeronaves.tablePriceHour')->with('records', $records);
     }
 }

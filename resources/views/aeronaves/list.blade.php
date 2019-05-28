@@ -22,9 +22,9 @@
                                 <th>matricula</th>
                                 <th>marca</th>
                                 <th>modelo</th>
-                                <th>nº de lugares</th>
-                                <th>total de horas</th>
-                                <th>preço hora</th>
+                                <th>num Lugares</th>
+                                <th>total horas</th>
+                                <th>preco_hora</th>
 
                             </tr>
                             </thead>
@@ -39,22 +39,28 @@
                                     <td>{{ $aeronave->num_lugares }}</td>
                                     <td>{{ $aeronave->conta_horas }}</td>
                                     <td>{{ $aeronave->preco_hora }}</td>
-                                    @can('direcao', auth()->user())
-                                        <td>
-                                            <a class="btn btn-primary"
-                                               href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
-                                            <form action="{{action('AeronaveController@destroy', ['matricula' => $aeronave->matricula])}}"
-                                                  method="POST" role="form" class="inline">
-                                                {{ method_field('DELETE') }}
-                                                {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger">Delete</button>
-                                            </form>
-                                        </td>
-                                @endcan
+
+                                    @can('direcao')
+                                    <td class="inline">
+                                        <a class="btn btn-sm btn-primary"
+                                           href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
+                                    </td>
+                                    <td class="inline">
+                                        <form action="{{action('AeronaveController@destroy',$aeronave)}}"
+                                              method="POST" role="form" class="inline">
+                                            {{ method_field('DELETE') }}
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+
                                 </tr>
+                            @endcan
                             @endforeach
-                            <div class="row justify-content-center">{{ $aeronaves->links() }}   </div>
+                        </table>
+                        <div class="row justify-content-center">{{ $aeronaves->links() }}   </div>
                     </div>
+
                 </div>
 
             </div>

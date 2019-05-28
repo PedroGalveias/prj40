@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
+use App\Aeronave;
+use App\Http\Requests\StoreSocio;
+use App\Movimento;
+use Dotenv\Validator;
+
 use Illuminate\Http\Request;
 use App\User;
-use Illuminate\Session\Store;
+
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreSocio;
 
+use App\Http\Requests\UpdateSocio;
 
 class UserController extends Controller
 {
@@ -21,22 +25,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if (Auth::check()) {
-
-            $users = UserController::filter($request);
-
-
+        if (Auth::user()->direcao) {
+            $socios = User::paginate(24);
         } else {
-
-            return Response(view('errors.403'), 403);
+            $socios = User::where('ativo', 1)->paginate(24);
         }
 
+        $title = 'Sócios';
 
-        return view('users.users', compact('users'))->with('users', $users);
+        return view('socios.list', compact('title', 'socios'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -45,9 +45,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $user = new User();
-        return view('users.add', compact('user'));
+        $title = 'Inserir novo sócio';
+        $socio = new User();
 
+        return view('socios.add', compact('title', 'socio'));
     }
 
     /**
@@ -58,140 +59,85 @@ class UserController extends Controller
      */
     public function store(StoreSocio $request)
     {
-
         $socio = $request->validated();
-
         $num_socio = User::max('num_socio');
+
         $socio['num_socio'] = ++$num_socio;
         $socio['password'] = Hash::make($socio['data_nascimento']);
+        
         $user = User::create($socio);
         $user->sendEmailVerificationNotification();
 
 
         return redirect()->action('UserController@index');
-
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //nao é para fazer
+        //
     }
 
-
-    public function edit(User $user)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $socio)
     {
+        $title = "Editar Sócio";
 
-        return view('users.edit', compact('user'));
+        return view('socios.edit', compact('title', 'socio'));
     }
 
-
-    public function update(StoreSocio $request, User $user)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateSocio $request, User $socio)
     {
+        $socioEdit = $request->validated();
 
-
-        $rules = [
-            'name' => 'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'email' => 'required|email|unique:users,email,' . user()->id . ',id',
-            'nome_informal' => 'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'sexo' => 'required',
-            'data_nascimento' => 'required|date',
-            'nif' => 'required|integer|max:999999999',
-            'telefone' => 'required|long|regex:/^\+?\d{3}(?: ?\d+)*$/',
-            'endereco' => 'required',
-            'tipo_socio' => 'required',
-            'file_foto' => 'nullable|image'
-        ];
-
-
-        $validator = Validator::make($request, $rules);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator);
-
-        }
-        $fileCertificado = $request->file('certificate');
-
-        if ($fileCertificado != null) {
-            $validator['certificado_confirmado'] = 0;
-
-        }
-        if ($fileCertificado->isValid()) {
-
-
-            $certificadoNome = 'certificado_' . $user->id . '.' . $fileCertificado->getClientOriginalExtension();
-            Storage::disk('local')->putFileAs('app/docs_piloto/' . $user->id, $fileCertificado, $certificadoNome);
-        } else {
-            //if user has a certificate and want to change it
-
-
-        }
-
-        $name = $request->file_foto;
-
-        if ($name->isValid()) {
-            $name = $name->hashname();
-
-            Storage::disk('public')->putFileAs('fotos', request()->file('file_foto'), $name);
-        }
-        $keys = array_keys($validator, null, true);
+        $keys = array_keys($socioEdit, null, true);
 
         foreach ($keys as $key) {
-            unset($validator[$key]);
+            unset($socioEdit[$key]);
         }
-        $user->fill($validator);
-        $user->save();
+
+
+        $socio->fill($socioEdit);
+        $socio->save();
+
+
         return redirect()->action('UserController@index');
-
-        /*
-    $socioEdit = $request->validated();
-    dd($socioEdit);
-//        $request->profile_picture->storeAs('fotos', $socio->id.'_pic.jpg');
-
-    $keys = array_keys($socioEdit, null, true);
-
-    foreach ($keys as $key) {
-        unset($socioEdit[$key]);
-    }
-    */
-
-
     }
 
-    public static function filter(Request $request)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
-        if ($users = User::where('num_socio', '<>', -1)) {
+        if (!Movimento::find($id)) {
+            $user = User::findOrFail($id);
+            $user->delete();
 
-            if ($request->filled('email')) {
-                $users = $users->where('email', $request->email);
-            }
-            if ($request->filled('tipo_socio')) {
-                $users = $users->where('tipo_socio', $request->tipo_socio);
-            }
-            if ($request->filled('num_socio')) {
-
-                $users = $users->where('num_socio', $request->num_socio);
-            }
-            if ($request->filled('nome_informal')) {
-                $users = $users->where('nome_informal', $request->nome_informal);
-            }
-
-            if ($request->filled('direcao')) {
-                $users = $users->where('direcao', $request->direcao);
-            }
         }
-        $users = $users->orderBy('num_socio', 'asc')
-            ->orderBy('num_socio')
-            ->paginate(20);
 
-        return $users;
+
+        return redirect()->back();
     }
-
 
     public function showChangePasswordForm()
     {
@@ -202,11 +148,11 @@ class UserController extends Controller
     {
         if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
             // The passwords matches
-            return redirect()->back()->with("error", "Your current password does not matches with the password you provided. Please try again.");
+            return redirect()->back()->with("errors", "Your current password does not matches with the password you provided. Please try again.");
         }
         if (strcmp($request->get('current-password'), $request->get('new-password')) == 0) {
             //Current password and new password are same
-            return redirect()->back()->with("error", "New Password cannot be same as your current password. Please choose a different password.");
+            return redirect()->back()->with("errors", "New Password cannot be same as your current password. Please choose a different password.");
         }
         $validatedData = $request->validate([
             'current-password' => 'required',
@@ -219,18 +165,28 @@ class UserController extends Controller
         return redirect()->back()->with("success", "Password changed successfully !");
     }
 
-    public function destroy($id)
+    public function quota(Request $request, User $socio)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->back()->with('success', 'User deleted successfully!');
+        $socio->quota_paga = $request->quota_paga;
+        $socio->save();
 
+
+        return redirect()->back()->with('success');
     }
 
-    public function profile()
+    public function ativarSocio(Request $request, User $socio)
     {
-        $user = Auth::user();
-        return view('users.profile', compact('user', $user));
+        $socio->ativo = $request->ativo;
+        $socio->save();
+
+        return redirect()->back()->with('success');
+    }
+
+    public function desativar_sem_quotas(Request $request)
+    {
+        $socio = User::where('quota_paga', 0)->update([$request => 0]);
+        $socio->save();
+        return redirect()->back()->with('success');
     }
 
     public function certificado(User $piloto)
@@ -247,6 +203,12 @@ class UserController extends Controller
 
         return response()->file(storage_path("app/docs_piloto/licenca_{$piloto->id}.pdf"));
 
+    }
+    public function sendReActivationEmail(User $socio)
+    {
+        $socio->sendEmailVerificationNotification();
+
+        return redirect()->back();
     }
 
 }

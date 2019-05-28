@@ -1,1 +1,0 @@
-Laravel project for the course Internet Application @ IPL-ESTG

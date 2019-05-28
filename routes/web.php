@@ -10,26 +10,33 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes(['verify' => true, 'register' => false]);
 
 Route::get('/', function () {
     return view('welcome');
 });
-
- Auth::routes(['verify' => true, 'register' => false]);
-
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('socios', 'UserController')->except(['show']);
+Route::resource('movimentos', 'MovimentoController')->except(['show']);
+Route::resource('aeronaves', 'AeronaveController')->parameters(['aeronaves'=>'aeronave'])->except(['show']);
 
-Route::resource('users', 'UserController')->except(['show']);
-Route::resource('movimentos', 'MovementController')->except(['show']);
-
-Route::resource('/aeronaves', 'AeronaveController')->except(['show']);
-//Route::get('/alterarPerfil/{id}', 'UserController@alterarPerfil')->name('alterarPerfil');
-
-Route::get('/PrecoHoraAeronave','AeronaveController@tablePriceHour');
-
-Route::get('/profile', 'UserController@profile');
-
+//change pass
 Route::get('/password','UserController@showChangePasswordForm');
 Route::post('/password','UserController@changePassword')->name('changePassword');
+
+//email
+Route::post('/socios/{socio}/send_reactivate_mail','UserController@sendReActivationEmail')->name('sendReActivationEmail');
+
+//quotas
+Route::patch('/socios/{socio}/quota','UserController@quota')->name('quota');
+Route::patch('/socios/desativar_sem_quotas','UserController@desativar_sem_quotas')->name('desativar_sem_quotas');
+
+//certificados
 Route::get('/pilotos/{piloto}/certificado', 'UserController@certificado')->name('certificado');
 Route::get('/pilotos/{piloto}/licenca', 'UserController@licenca')->name('licenca');
+
+//socios ativos
+
+Route::patch('/socios/{socio}/ativo','UserController@ativarSocio')->name('ativarSocio');
+
+

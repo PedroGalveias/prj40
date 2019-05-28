@@ -5,12 +5,10 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use Notifiable;
-    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','num_socio','nome_informal', 'sexo', 'data_nascimento', 'tipo_socio','direcao','nif',
+        'name', 'email', 'password','num_socio','nome_informal', 'sexo', 'data_nascimento', 'tipo_socio','direcao','nif'
     ];
 
     /**
@@ -29,7 +27,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
-
 
     /**
      * The attributes that should be cast to native types.

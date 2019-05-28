@@ -23,14 +23,15 @@ class StoreSocio extends FormRequest
      */
     public function rules()
     {
+
         return [
             'name'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'email'=>'required|email|unique:users,email,'. Auth::user()->id,
+            'email'=>'required|email|unique:users,email,',
             'nome_informal'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
             'sexo'=>'required',
             'data_nascimento'=>'required|date',
-            'nif'=>'required|unique:users,integer|numeric|max:999999999',
-            'telefone'=>'required|unique:users,integer|regex:/^\+?\d{3}(?: ?\d+)*$/',
+            'nif'=>"required|unique:users,nif|numeric|max:999999999",
+            'telefone'=>"required|unique:users,telefone|regex:/^\+?\d{3}(?: ?\d+)*$/",
             'endereco'=>'required',
             'tipo_socio'=>'required',
             'file_foto'=>'nullable|image'

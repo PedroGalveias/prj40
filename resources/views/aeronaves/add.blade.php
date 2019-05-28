@@ -1,24 +1,29 @@
 @extends('layouts.app')
 @section('content')
 
+    @if($errors->any())
+        @include('partials.errors')
+    @endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <form method="POST" action="{{action('AeronaveController@store',['matricula'=>$aeronave->matricula])}}">
+                    <form method="POST"
+                          action="{{action('AeronaveController@store')}}">
 
                         {{csrf_field()}}
 
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Marca </label>
                             <div class="col-sm-10">
-                                <input type="text" name="marca" class="form-control" id="marca" placeholder="Marca" />
+                                <input type="text" name="marca" class="form-control" id="marca" placeholder="Marca"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Matricula </label>
                             <div class="col-sm-10">
-                                <input type="text" name="matricula" class="form-control" id="matricula" placeholder="Matricula" />
+                                <input type="text" name="matricula" class="form-control" id="matricula"
+                                       placeholder="Matricula"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -30,27 +35,29 @@
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Num lugares </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_lugares" class="form-control" id="num_lugares" placeholder="Num_lugares"/>
+                                <input type="text" name="num_lugares" class="form-control" id="num_lugares"
+                                       placeholder="Num_lugares"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Conta horas </label>
                             <div class="col-sm-10">
-                                <input type="text" name="conta_horas" class="form-control" id="conta_horas" placeholder="Conta_horas"/>
+                                <input type="text" name="conta_horas" class="form-control" id="conta_horas"
+                                       placeholder="Conta_horas"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Preço hora </label>
                             <div class="col-sm-10">
-                                <input type="text" name="preco_hora" class="form-control" id="preco_hora" placeholder="Preco_hora" />
+                                <input type="text" name="preco_hora" class="form-control" id="preco_hora"
+                                       placeholder="Preco_hora"/>
                             </div>
                         </div>
 
 
-
                         <div class="form-group">
                             <div class="col-sm-offset-5 col-sm-6">
-                                <input type="submit" class="btn btn-success" name="ok" href="{{route('aeronaves.store', ['matricula'=>$aeronave->matricula])}}" value="guardar">
+                                <input type="submit" class="btn btn-success" name="ok" value="guardar">
                                 <a class="btn btn-primary" href="{{action('AeronaveController@index')}}">voltar</a>
 
                             </div>
