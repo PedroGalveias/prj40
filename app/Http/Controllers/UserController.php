@@ -25,12 +25,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::user()->direcao) {
-            $socios = User::paginate(24);
+            $socios = UserController::filter($request);
         } else {
-            $socios = User::where('ativo', 1)->paginate(24);
+            $socios = UserController::filter($request)->User::where('ativo', 1)->paginate(24);
         }
 
         $title = 'Sócios';
@@ -54,7 +54,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreSocio $request)
@@ -64,7 +64,7 @@ class UserController extends Controller
 
         $socio['num_socio'] = ++$num_socio;
         $socio['password'] = Hash::make($socio['data_nascimento']);
-        
+
         $user = User::create($socio);
         $user->sendEmailVerificationNotification();
 
@@ -75,7 +75,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User $user
+     * @param \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -86,7 +86,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User $user
+     * @param \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function edit(User $socio)
@@ -99,8 +99,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\User $user
+     * @param \Illuminate\Http\Request $request
+     * @param \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateSocio $request, User $socio)
@@ -124,7 +124,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User $user
+     * @param \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -138,6 +138,46 @@ class UserController extends Controller
 
         return redirect()->back();
     }
+
+    public static function filter(Request $request)
+    {
+        if ($users = User::where('num_socio', '<>', -1)) {
+
+            if ($request->filled('email')) {
+                $users = $users->where('email', $request->email);
+            }
+            if ($request->filled('tipo_socio')) {
+                $users = $users->where('tipo_socio', $request->tipo_socio);
+            }
+            if ($request->filled('num_socio')) {
+
+                $users = $users->where('num_socio', $request->num_socio);
+            }
+            if ($request->filled('nome_informal')) {
+                $users = $users->where('nome_informal', $request->nome_informal);
+            }
+
+            if ($request->filled('direcao')) {
+                $users = $users->where('direcao', $request->direcao);
+            }            if ($request->filled('direcao')) {
+                $users = $users->where('direcao', $request->direcao);
+            }
+
+            if ($request->filled('quota_paga')) {
+                $users = $users->where('quota_paga', $request->quota_paga);
+            }
+
+            if ($request->filled('ativo')) {
+                $users = $users->where('ativo', $request->ativo);
+            }
+        }
+        $users = $users->orderBy('num_socio', 'asc')
+            ->orderBy('num_socio')
+            ->paginate(24);
+
+        return $users;
+    }
+
 
     public function showChangePasswordForm()
     {
@@ -204,6 +244,7 @@ class UserController extends Controller
         return response()->file(storage_path("app/docs_piloto/licenca_{$piloto->id}.pdf"));
 
     }
+
     public function sendReActivationEmail(User $socio)
     {
         $socio->sendEmailVerificationNotification();

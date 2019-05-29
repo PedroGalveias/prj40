@@ -36,7 +36,9 @@ Route::get('/pilotos/{piloto}/certificado', 'UserController@certificado')->name(
 Route::get('/pilotos/{piloto}/licenca', 'UserController@licenca')->name('licenca');
 
 //socios ativos
-
 Route::patch('/socios/{socio}/ativo','UserController@ativarSocio')->name('ativarSocio');
+
+// Preço/Hora de uma Aeronave
+Route::get('/aeronaves/{aeronaves}/precos_tempos', 'AeronaveController@priceTime')->name('priceTime');
 
 

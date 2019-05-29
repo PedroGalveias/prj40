@@ -15,12 +15,10 @@ class MovimentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::check()) {
-            $movimentos = Movimento::orderBy('created_at', 'asc')->paginate(25);
-
-
+            $movimentos = MovimentoController::filter($request);
         } else {
 
             return Response(view('errors.403'), 403);
@@ -43,7 +41,7 @@ class MovimentoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -54,7 +52,7 @@ class MovimentoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Movimento $movimento
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function show(Movimento $movimento)
@@ -65,7 +63,7 @@ class MovimentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Movimento $movimento
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function edit(Movimento $movimento)
@@ -78,8 +76,8 @@ class MovimentoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Movimento $movimento
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function update(StoreMovimento $request, Movimento $movimento)
@@ -98,11 +96,50 @@ class MovimentoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Movimento $movimento
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function destroy(Movimento $movimento)
     {
         //
+    }
+
+    public static function filter(Request $request)
+    {
+        if ($movimentos = Movimento::where('id', '<>', -1)) {
+
+            if ($request->filled('aeronave')) {
+                $movimentos = $movimentos->where('aeronave', $request->aeronave);
+            }
+            if ($request->filled('piloto_id')) {
+                $movimentos = $movimentos->where('piloto_id', $request->piloto_id);
+            }
+            if ($request->filled('id')) {
+
+                $movimentos = $movimentos->where('id', $request->id);
+            }
+            if ($request->filled('instrutor_id')) {
+                $movimentos = $movimentos->where('instrutor_id', $request->instrutor_id);
+            }
+
+            if ($request->filled('natureza')) {
+                $movimentos = $movimentos->where('natureza', $request->natureza);
+            }
+
+            if ($request->filled('data') || $request->filled('data')) {
+                $movimentos = $movimentos->whereBetween('natureza', ['from', 'to']);;
+
+            }
+
+            if ($request->filled('confirmado')) {
+                $movimentos = $movimentos->where('confirmado', $request->confirmado);
+            }
+
+
+            $movimentos = $movimentos->orderBy('id', 'asc')
+                ->orderBy('id')
+                ->paginate(25);
+        }
+        return $movimentos;
     }
 }
