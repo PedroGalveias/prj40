@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Aeronave;
+
 use App\Http\Requests\StoreSocio;
 use App\Movimento;
-use Dotenv\Validator;
 
 use Illuminate\Http\Request;
 use App\User;
@@ -15,8 +14,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
-
+use DB;
 use App\Http\Requests\UpdateSocio;
+
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -27,14 +28,17 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+
         if (Auth::user()->direcao) {
-            $socios = UserController::filter($request);
+            $matchThese = [['id', '<>', '-1'], ['num_socio', '<>', '-1']];
+
+            $socios = UserController::filter($request, $matchThese);
         } else {
-            $socios = UserController::filter($request)->User::where('ativo', 1)->paginate(24);
+            $matchThese = [['ativo', '=', '1'], ['num_socio', '<>', '-1']];
+
+            $socios = UserController::filter($request, $matchThese);
         }
-
         $title = 'Sócios';
-
         return view('socios.list', compact('title', 'socios'));
     }
 
@@ -45,26 +49,43 @@ class UserController extends Controller
      */
     public function create()
     {
-        $title = 'Inserir novo sócio';
-        $socio = new User();
+        if (Gate::allows('direcao', Auth::user())) {
+            $title = 'Inserir novo sócio';
+            $socio = new User();
+            return view('socios.add', compact('title', 'socio'));
+        } else {
+            return Response(view('errors.403'), 403);
+        }
 
-        return view('socios.add', compact('title', 'socio'));
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreSocio $request)
     {
-        $socio = $request->validated();
-        $num_socio = User::max('num_socio');
+        $name = $request->foto_url;
 
+        if ($name != null) {
+            if ($name->isValid()) {
+                Storage::putFile('/storage/fotos/', $request->file('foto_url'));
+            }
+        }
+
+        $socio = $request->validated();
+
+        $num_socio = User::max('num_socio');
         $socio['num_socio'] = ++$num_socio;
         $socio['password'] = Hash::make($socio['data_nascimento']);
 
+
+        if ($name != null) {
+            $socio['foto_url']->foto_url = $name;
+        }
         $user = User::create($socio);
         $user->sendEmailVerificationNotification();
 
@@ -75,7 +96,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\User $user
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -86,21 +107,23 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\User $user
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function edit(User $socio)
     {
-        $title = "Editar Sócio";
 
+        $title = "Editar Sócio";
         return view('socios.edit', compact('title', 'socio'));
+
+
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\User $user
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateSocio $request, User $socio)
@@ -112,8 +135,12 @@ class UserController extends Controller
         foreach ($keys as $key) {
             unset($socioEdit[$key]);
         }
+        /*  if (Auth::user()->tipo_socio =='P'){
+              User::where(licenca_confirmada,'1')->update(licenca_confirmada,'0');
+              User::where(certificado_confirmado,'1')->update(certificado_confirmado,'0');
 
-
+          }
+  */
         $socio->fill($socioEdit);
         $socio->save();
 
@@ -124,60 +151,20 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\User $user
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $socio)
     {
-        if (!Movimento::find($id)) {
-            $user = User::findOrFail($id);
-            $user->delete();
-
+        Storage::delete("public/fotos/$socio->foto_url");
+        if (Movimento::where('piloto_id', $socio->id)->count() == 0 && Movimento::where('instrutor_id', $socio->id)->count() == 0) {
+            $socio->forceDelete();
+        } else {
+            $socio->delete();
         }
-
 
         return redirect()->back();
     }
-
-    public static function filter(Request $request)
-    {
-        if ($users = User::where('num_socio', '<>', -1)) {
-
-            if ($request->filled('email')) {
-                $users = $users->where('email', $request->email);
-            }
-            if ($request->filled('tipo_socio')) {
-                $users = $users->where('tipo_socio', $request->tipo_socio);
-            }
-            if ($request->filled('num_socio')) {
-
-                $users = $users->where('num_socio', $request->num_socio);
-            }
-            if ($request->filled('nome_informal')) {
-                $users = $users->where('nome_informal', $request->nome_informal);
-            }
-
-            if ($request->filled('direcao')) {
-                $users = $users->where('direcao', $request->direcao);
-            }            if ($request->filled('direcao')) {
-                $users = $users->where('direcao', $request->direcao);
-            }
-
-            if ($request->filled('quota_paga')) {
-                $users = $users->where('quota_paga', $request->quota_paga);
-            }
-
-            if ($request->filled('ativo')) {
-                $users = $users->where('ativo', $request->ativo);
-            }
-        }
-        $users = $users->orderBy('num_socio', 'asc')
-            ->orderBy('num_socio')
-            ->paginate(24);
-
-        return $users;
-    }
-
 
     public function showChangePasswordForm()
     {
@@ -222,11 +209,18 @@ class UserController extends Controller
         return redirect()->back()->with('success');
     }
 
-    public function desativar_sem_quotas(Request $request)
+    public function desativarSemQuotas()
     {
-        $socio = User::where('quota_paga', 0)->update([$request => 0]);
-        $socio->save();
-        return redirect()->back()->with('success');
+        User::where('quota_paga', '0')->update(['ativo' => '0']);
+
+        return redirect()->action('UserController@index');
+    }
+
+    public function resetQuota()
+    {
+        User::where('quota_paga', '1')->update(['quota_paga' => '0']);
+
+        return redirect()->action('UserController@index');
     }
 
     public function certificado(User $piloto)
@@ -251,5 +245,44 @@ class UserController extends Controller
 
         return redirect()->back();
     }
+
+    public static function filter(Request $request, $matchThese)
+    {
+
+        if ($users = User::where($matchThese)) {
+
+
+            if ($request->filled('email')) {
+                $users = $users->where('email', $request->email);
+            }
+            if ($request->filled('tipo_socio')) {
+                $users = $users->where('tipo_socio', $request->tipo_socio);
+            }
+            if ($request->filled('num_socio')) {
+                $users = $users->where('num_socio', $request->num_socio);
+            }
+            if ($request->filled('nome_informal')) {
+                $users = $users->where('nome_informal', $request->nome_informal);
+            }
+            if ($request->filled('direcao')) {
+                $users = $users->where('direcao', $request->direcao);
+            }
+            if ($request->filled('direcao')) {
+                $users = $users->where('direcao', $request->direcao);
+            }
+            if ($request->filled('quota_paga')) {
+                $users = $users->where('quota_paga', $request->quota_paga);
+            }
+            if ($request->filled('ativo')) {
+                $users = $users->where('ativo', $request->ativo);
+            }
+        }
+
+        $users = $users->orderBy('num_socio', 'asc')
+            ->orderBy('num_socio')
+            ->paginate(24);
+        return $users;
+    }
+
 
 }

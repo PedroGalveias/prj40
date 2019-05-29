@@ -21,8 +21,13 @@
                         <div class="row justify-content-center">
                             <div class="profile-header-container">
                                 <div class="profile-header-img">
-                                    <img class="rounded-circle" src=" {{asset("/storage/fotos/$socio->foto_url")}}"
-                                         width=""/>
+                                    @if(!($socio->foto_url))
+                                        <td><img class="rounded-circle" src=" {{asset("/storage/fotos/default.jpg")}}" width="100"/></td>
+                                    @else
+                                        <td><img class="rounded-circle" src=" {{asset("/storage/fotos/$socio->foto_url")}}" width="100"/></td>
+                                    @endif
+
+
                                     <!-- badge -->
                                     <div class="row justify-content-center">
                                         <span class="label label-default rank-label">{{$socio->name}}</span>
@@ -86,20 +91,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="ativo" class="col-sm-4 col-form-label">Sócio ativo</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="ativo">
-                                        <option value="1" {{old('ativo', $socio->ativo) == '1' ? 'selected' : ''}}>
-                                            Sim
-                                        </option>
-                                        <option value="0" {{old('ativo', $socio->ativo) == '0' ? 'selected' : ''}}>
-                                            Não
-                                        </option>
 
-                                    </select>
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label for="direcao" class="col-sm-4 col-form-label">Direção</label>
                                 <div class="col-sm-10">
@@ -171,19 +163,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="ativo" class="col-sm-4 col-form-label">Sócio ativo</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="ativo" disabled>
-                                        <option value="1" {{old('ativo', $socio->ativo) == '1' ? 'selected' : ''}}>
-                                            Sim
-                                        </option>
-                                        <option value="0" {{old('ativo', $socio->ativo) == '0' ? 'selected' : ''}}>
-                                            Não
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label for="direcao" class="col-sm-4 col-form-label">Direção</label>
                                 <div class="col-sm-10">
@@ -217,7 +197,6 @@
 
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="email" class="col-sm-4 col-form-label"> Email </label>
                             <div class="col-sm-10">
@@ -264,49 +243,74 @@
                         @if($socio->tipo_socio == 'P')
 
 
-
                             <div class="form-group">
-                                <label for="tipo_licenca" class="col-md-4 control-label">tipo licenca</label>
+                                <label for="tipo_licenca" class="col-sm-4 col-form-label">tipo_licenca</label>
                                 <div class="col-sm-10">
+                                    <select class="form-control" name="tipo_licenca">
+                                        <option value="1" {{old('tipo_licenca', $socio->tipo_licenca) == 'ALUNO-PPL(A)' ? 'selected' : ''}}>
+                                            Aluno - Private Pilot License Airplane
+                                        </option>
+                                        <option value="0" {{old('tipo_licenca', $socio->tipo_licenca) == 'ALUNO-PU' ? 'selected' : ''}}>
+                                            Aluno - Piloto de Ultraleve
+                                        </option>
+                                        <option value="1" {{old('tipo_licenca', $socio->tipo_licenca) == 'ATPL' ? 'selected' : ''}}>
+                                            Airline Transport Pilot License
+                                        </option>
+                                        <option value="1" {{old('tipo_licenca', $socio->tipo_licenca) == 'CPL(A)' ? 'selected' : ''}}>
+                                            Comercial Pilot License Airplane
+                                        </option>
+                                        <option value="1" {{old('tipo_licenca', $socio->tipo_licenca) == 'PPL(A)' ? 'selected' : ''}}>
+                                            Private Pilot License Airplane
+                                        </option>
+                                        <option value="1" {{old('tipo_licenca', $socio->tipo_licenca) == 'PU' ? 'selected' : ''}}>
+                                            Piloto de Ultraleve
+                                        </option>
 
-                                    <select class="form-control" id="tipo_licenca">
-                                        <option value="">Selecione o tipo licenca</option>
-                                        <option value="">Tecnologias de Internet</option>
-                                        <option value="Ainet" selected>Aplicações para a Internet</option>
-                                        <option value="DAD">Desenvolvimento Aplicações Distribuídas</option>
                                     </select>
-
                                 </div>
                             </div>
 
-
-
                             <div class="form-group">
-                                <label for="instrutor" class="col-sm-4 col-form-label"> instrutor </label>
+                                <label for="instrutor" class="col-sm-4 col-form-label">instrutor</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="instrutor" class="form-control" id="instrutor"
-                                           placeholder="instrutor" value="{{old('instrutor', $socio->instrutor)}}"/>
+                                    <select class="form-control" name="instrutor">
+                                        <option value="1" {{old('instrutor', $socio->instrutor) == '1' ? 'selected' : ''}}>
+                                            Sim
+                                        </option>
+                                        <option value="0" {{old('instrutor', $socio->instrutor) == '0' ? 'selected' : ''}}>
+                                            Não
+                                        </option>
+
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="validade_licenca" class="col-sm-4 col-form-label"> validade licenca </label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="validade_licenca" class="form-control"
+                                    <input type="date" name="validade_licenca" class="form-control"
                                            id="validade_licenca" placeholder="validade_licenca"
                                            value="{{old('validade_licenca', $socio->validade_licenca)}}"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="licenca_confirmada" class="col-sm-4 col-form-label"> licenca
-                                    confirmada </label>
+                                <label for="licenca_confirmada" class="col-sm-4 col-form-label">licenca
+                                    confirmada</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="licenca_confirmada" class="form-control"
-                                           id="licenca_confirmada" placeholder="licenca_confirmada"
-                                           value="{{old('licenca_confirmada', $socio->licenca_confirmada)}}"/>
+                                    <select class="form-control" name="licenca_confirmada">
+                                        <option value="1" {{old('licenca_confirmada', $socio->licenca_confirmada) == '1' ? 'selected' : ''}}>
+                                            Sim
+                                        </option>
+                                        <option value="0" {{old('licenca_confirmada', $socio->licenca_confirmada) == '0' ? 'selected' : ''}}>
+                                            Não
+                                        </option>
+
+                                    </select>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="num_certificado" class="col-sm-4 col-form-label"> num certificado </label>
+                                <label for="num_certificado" class="col-sm-4 col-form-label"> Número
+                                    certificado </label>
                                 <div class="col-sm-10">
                                     <input type="text" name="num_certificado" class="form-control" id="num_certificado"
                                            placeholder="num_certificado"
@@ -317,30 +321,45 @@
                                 <label for="classe_certificado" class="col-sm-4 col-form-label"> classe
                                     certificado</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="classe_certificado" class="form-control"
-                                           id="classe_certificado" placeholder="classe_certificado"
-                                           value="{{old('classe_certificado', $socio->classe_certificado)}}"/>
+                                    <select class="form-control" name="classe_certificado">
+                                        <option value="1" {{old('classe_certificado', $socio->classe_certificado) == 'Class 1' ? 'selected' : ''}}>
+                                            Class 1 medical certificate
+                                        </option>
+                                        <option value="0" {{old('classe_certificado', $socio->classe_certificado) == 'Class 2	' ? 'selected' : ''}}>
+                                            Class 2 medical certificate
+                                        </option>
+                                        <option value="1" {{old('classe_certificado', $socio->classe_certificado) == 'LAPL	' ? 'selected' : ''}}>
+                                            Light Aircraft Pilot Licence Medical
+                                        </option>
+
+
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="validade_certificado" class="col-sm-4 col-form-label"> validade
                                     certificado</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="validade_certificado" class="form-control"
+                                    <input type="date" name="validade_certificado" class="form-control"
                                            id="validade_certificado" placeholder="validade_certificado"
                                            value="{{old('validade_certificado', $socio->validade_certificado)}}"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="certificado_confirmado" class="col-sm-4 col-form-label">
-                                    certificado_confirmado</label>
+                                <label for="certificado_confirmado" class="col-sm-4 col-form-label">certificado
+                                    confirmado</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="certificado_confirmado" class="form-control"
-                                           id="certificado_confirmado" placeholder="certificado_confirmado"
-                                           value="{{old('certificado_confirmado', $socio->certificado_confirmado)}}"/>
+                                    <select class="form-control" name="certificado_confirmado">
+                                        <option value="1" {{old('certificado_confirmado', $socio->certificado_confirmado) == '1' ? 'selected' : ''}}>
+                                            Sim
+                                        </option>
+                                        <option value="0" {{old('certificado_confirmado', $socio->certificado_confirmado) == '0' ? 'selected' : ''}}>
+                                            Não
+                                        </option>
+
+                                    </select>
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <td><a href="{{route('licenca',['piloto' => $socio])}}">licenca.pdf</a>&nbsp

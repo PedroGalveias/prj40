@@ -39,8 +39,8 @@ class StoreMovimento extends FormRequest
             'tipo_instrucao' => 'nullable',
             'instrutor_id' => 'nullable|numeric|max:999999999',
             'modo_pagamento' => 'nullable',
-            'num_recibo' => 'nullable',
-            'observacoes' => 'required'
+            'num_recibo' => 'required',
+            'observacoes' => 'nullable'
         ];
     }
 
@@ -66,14 +66,8 @@ class StoreMovimento extends FormRequest
             'num_servico.required' => 'O número do serviço deve ser preenchido',
             'conta_horas_inicio.required' => 'O conta horas início deve ser preenchida',
             'conta_horas_fim.required' => 'O conta horas fim deve ser preenchida',
-            //'conta_horas_inicio.date'=>'O formato do conta horas início está inválido',
-            //'conta_horas_fim.date'=>'O formato do conta horas fim está inválido',
-            'num_pessoas.required' => 'O número de pessoas deve ser preenchido',
-            'tipo_instrucao.required' => 'O tipo de instrução deve ser preenchido',
-            'instrutor_id.required' => 'O id do Instrutor deve ser preenchido',
-            'modo_pagamento.required' => 'O modo de pagamento deve ser preenchido',
-            'num_recibo.required' => 'O número do recibo deve ser preenchido',
-            'observacoes.required' => 'O campo deve ser preenchido',
+
+
 
         ];
     }
