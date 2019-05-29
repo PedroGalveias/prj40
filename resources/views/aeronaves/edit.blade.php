@@ -24,7 +24,7 @@
                             <label for="matricula" class="col-sm-4 col-form-label"> Matricula </label>
                             <div class="col-sm-10">
                                 <input type="text" name="matricula" class="form-control" id="matricula"
-                                       placeholder="Matricula" value="{{old('matricula', $aeronave->matricula)}}"/>
+                                       placeholder="Matricula" disabled value="{{old('matricula', $aeronave->matricula)}}"/>
                             </div>
                         </div>
                         <div class="form-group">

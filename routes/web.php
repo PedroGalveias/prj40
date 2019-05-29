@@ -15,8 +15,10 @@ Auth::routes(['verify' => true, 'register' => false]);
 Route::get('/', function () {
     return view('welcome');
 });
+Route::patch('/socios/desativar_sem_quotas','UserController@desativarSemQuotas')->name('desativarSemQuotas');
+Route::patch('/socios/reset_quotas','UserController@resetQuota')->name('resetQuota');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('socios', 'UserController')->except(['show']);
+Route::resource('socios', 'UserController')->except(['show','desativarSemQuotas']);
 Route::resource('movimentos', 'MovimentoController')->except(['show']);
 Route::resource('aeronaves', 'AeronaveController')->parameters(['aeronaves'=>'aeronave'])->except(['show']);
 
@@ -28,17 +30,17 @@ Route::post('/password','UserController@changePassword')->name('changePassword')
 Route::post('/socios/{socio}/send_reactivate_mail','UserController@sendReActivationEmail')->name('sendReActivationEmail');
 
 //quotas
+
 Route::patch('/socios/{socio}/quota','UserController@quota')->name('quota');
-Route::patch('/socios/desativar_sem_quotas','UserController@desativar_sem_quotas')->name('desativar_sem_quotas');
+
+
 
 //certificados
 Route::get('/pilotos/{piloto}/certificado', 'UserController@certificado')->name('certificado');
 Route::get('/pilotos/{piloto}/licenca', 'UserController@licenca')->name('licenca');
 
 //socios ativos
-Route::patch('/socios/{socio}/ativo','UserController@ativarSocio')->name('ativarSocio');
 
-// Preço/Hora de uma Aeronave
-Route::get('/aeronaves/{aeronaves}/precos_tempos', 'AeronaveController@priceTime')->name('priceTime');
+Route::patch('/socios/{socio}/ativo','UserController@ativarSocio')->name('ativarSocio');
 
 
