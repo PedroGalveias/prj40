@@ -137,8 +137,8 @@ class AeronaveController extends Controller
     public function priceTime(Aeronave $aeronave)
     {
         // TODO -- Preco/Hora Para Cada Aeronave --
-        $records = DB::table('aeronaves_valores')->get();
+        //$records = DB::table('aeronaves_valores')->get();
 
-        return view('aeronaves.priceTime', compact('aeronave'))->with('records', $records);
+        return view('aeronaves.priceTime', compact('aeronave'));
     }
 }

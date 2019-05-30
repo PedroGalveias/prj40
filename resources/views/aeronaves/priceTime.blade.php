@@ -1,4 +1,4 @@
-@extends('Users.Pedro.Desktop.prj40_FINAL.prj40.resources.views.layouts.app')
+@extends('layouts.app')
 @section('content')
 
 
@@ -11,22 +11,32 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th scope="col">Matricula</th>
                             <th scope="col">Unidade</th>
                             <th scope="col">Minutos</th>
                             <th scope="col">Preço</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($records as $records)
+                        @for($unidades=1 ; $unidades <= 10; $unidades++)
                             <tr>
-                                <td>{{ $records->matricula }}</td>
-                                <td>{{ $records->unidade_conta_horas }}</td>
-                                <td>{{ $records->minutos }}</td>
-                                <td>{{ $records->preco }}</td>
-
+                                <td scope="row">
+                                    {{$unidades}}</td>
+                                <td scope="row">
+                                    <input
+                                            style='width:auto'
+                                            name="minutos[{{$unidades}}]"
+                                            value="{{5*round($unidades*6/5)}}"
+                                            readonly="readonly">
+                                </td>
+                                <td scope="row">
+                                    <input
+                                            style='width:auto'
+                                            name="preco[{{$unidades}}]"
+                                            value=" {{round((5*round($unidades*6/5))/60* $aeronave->preco_hora)}} "
+                                            readonly="readonly">
+                                </td>
                             </tr>
-                        @endforeach
+                        @endfor
                     </table>
                 </div>
             </div>

@@ -41,18 +41,22 @@
                                     <td>{{ $aeronave->preco_hora }}</td>
 
                                     @can('direcao')
-                                    <td class="inline">
-                                        <a class="btn btn-sm btn-primary"
-                                           href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
-                                    </td>
-                                    <td class="inline">
-                                        <form action="{{action('AeronaveController@destroy',$aeronave)}}"
-                                              method="POST" role="form" class="inline">
-                                            {{ method_field('DELETE') }}
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
-                                    </td>
+                                        <td class="inline">
+                                            <a class="btn btn-sm btn-primary"
+                                               href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-sm btn-info"
+                                               href="{{action('AeronaveController@priceTime', ['matricula' => $aeronave->matricula])}}">Preço/Hora</a>
+                                        </td>
+                                        <td class="inline">
+                                            <form action="{{action('AeronaveController@destroy',$aeronave)}}"
+                                                  method="POST" role="form" class="inline">
+                                                {{ method_field('DELETE') }}
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        </td>
 
                                 </tr>
                             @endcan
