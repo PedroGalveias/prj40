@@ -83,7 +83,7 @@
                         <div class="form-group">
                             <label for="hora_descolagem" class="col-sm-4 col-form-label"> Hora Descolagem </label>
                             <div class="col-sm-10">
-                                <input type="text" name="hora_descolagem" class="form-control" id="hora_descolagem" placeholder="hora_descolagem" />
+                                <input type="datetime-local" name="hora_descolagem" class="form-control" id="hora_descolagem" placeholder="hora_descolagem" />
 
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                         <div class="form-group">
                             <label for="hora_aterragem" class="col-sm-4 col-form-label"> Hora Aterragem </label>
                             <div class="col-sm-10">
-                                <input type="text" name="hora_aterragem" class="form-control" id="hora_aterragem" placeholder="hora_aterragem" />
+                                <input type="datetime-local" name="hora_aterragem" class="form-control" id="hora_aterragem" placeholder="hora_aterragem" />
 
                             </div>
                         </div>

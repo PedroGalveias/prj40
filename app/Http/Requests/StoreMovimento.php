@@ -21,6 +21,10 @@ class StoreMovimento extends FormRequest
     {
         return [
             'aeronave' => 'required',
+            'piloto_id' => 'required',
+            'validade_licenca_piloto' => 'required',
+            'tipo_licenca_piloto' => 'required',
+            'num_certificado_piloto' => 'required',
             'num_licenca_piloto' => 'required|numeric|max:999999999',
             'data' => 'required|date',
             'hora_aterragem' => 'required',

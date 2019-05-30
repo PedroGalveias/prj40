@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMovimento;
 
 use App\Movimento;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class MovimentoController extends Controller
@@ -13,7 +15,7 @@ class MovimentoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -28,7 +30,7 @@ class MovimentoController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -47,7 +49,7 @@ class MovimentoController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreMovimento $request)
     {
@@ -63,8 +65,8 @@ class MovimentoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Movimento $movimento
-     * @return \Illuminate\Http\Response
+     * @param Movimento $movimento
+     * @return Response
      */
     public function show(Movimento $movimento)
     {
@@ -74,8 +76,8 @@ class MovimentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Movimento $movimento
-     * @return \Illuminate\Http\Response
+     * @param Movimento $movimento
+     * @return Response
      */
     public function edit(Movimento $movimento)
     {
@@ -92,8 +94,8 @@ class MovimentoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Movimento $movimento
-     * @return \Illuminate\Http\Response
+     * @param Movimento $movimento
+     * @return Response
      */
     public function update(StoreMovimento $request, Movimento $movimento)
     {
@@ -112,12 +114,19 @@ class MovimentoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Movimento $movimento
-     * @return \Illuminate\Http\Response
+     * @param Movimento $movimento
+     * @return Response
+     * @throws Exception
      */
     public function destroy(Movimento $movimento)
     {
-        //
+        if (Movimento::where('movimento', $movimento->confirmado) == false) {
+            $movimento->forceDelete();
+        } else {
+            $movimento->delete();
+        }
+
+        return redirect()->back()->with('success', 'Movement deleted successfully!');
     }
     public static function filter(Request $request)
     {

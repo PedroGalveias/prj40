@@ -12,6 +12,13 @@
                           action="{{action('AeronaveController@store')}}">
 
                         {{csrf_field()}}
+                        <div class="form-group">
+                            <label for="matricula" class="col-sm-4 col-form-label"> Matricula </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="matricula" class="form-control" id="matricula" placeholder="Matricula"/>
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Marca </label>
