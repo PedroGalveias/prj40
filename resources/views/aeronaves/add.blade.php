@@ -12,13 +12,6 @@
                           action="{{action('AeronaveController@store')}}">
 
                         {{csrf_field()}}
-                        <div class="form-group">
-                            <label for="matricula" class="col-sm-4 col-form-label"> Matricula </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="matricula" class="form-control" id="matricula" placeholder="Matricula"/>
-                            </div>
-                        </div>
-
 
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Marca </label>
@@ -35,21 +28,21 @@
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Num lugares </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_lugares" class="form-control" id="num_lugares"
+                                <input type="number" min="1" name="num_lugares" class="form-control" id="num_lugares"
                                        placeholder="Num_lugares"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Conta horas </label>
                             <div class="col-sm-10">
-                                <input type="text" name="conta_horas" class="form-control" id="conta_horas"
+                                <input type="number" min="0" name="conta_horas" class="form-control" id="conta_horas"
                                        placeholder="Conta_horas"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="marca" class="col-sm-4 col-form-label"> Preço hora </label>
                             <div class="col-sm-10">
-                                <input type="text" name="preco_hora" class="form-control" id="preco_hora"
+                                <input type="number" min="0" name="preco_hora" class="form-control" id="preco_hora"
                                        placeholder="Preco_hora"/>
                             </div>
                         </div>

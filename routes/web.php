@@ -33,6 +33,11 @@ Route::post('/socios/{socio}/send_reactivate_mail','UserController@sendReActivat
 
 Route::patch('/socios/{socio}/quota','UserController@quota')->name('quota');
 
+//lista pilotos
+
+Route::get('/aeronaves/{aeronave}/pilotos', 'UserController@listaPilotosAutorizados')->name('users.listaAutorizados');
+Route::post('/aeronaves/{aeronave}/pilotos/{piloto}', 'UserController@acrescentaPiloto');
+Route::delete('/aeronaves/{aeronave}/pilotos/{piloto}', 'UserController@removePiloto');
 
 
 //certificados
@@ -40,9 +45,7 @@ Route::get('/pilotos/{piloto}/certificado', 'UserController@certificado')->name(
 Route::get('/pilotos/{piloto}/licenca', 'UserController@licenca')->name('licenca');
 
 //socios ativos
-Route::patch('/socios/{socio}/ativo','UserController@ativarSocio')->name('ativarSocio');
 
-// Preço/Hora de uma Aeronave
-Route::get('/aeronaves/{aeronave}/precos_tempos', 'AeronaveController@priceTime')->name('priceTime');
+Route::patch('/socios/{socio}/ativo','UserController@ativarSocio')->name('ativarSocio');
 
 

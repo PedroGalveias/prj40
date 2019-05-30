@@ -31,25 +31,25 @@
                     </select>
                 </div>
                 @can('direcao')
-                <div class="form-group">
-                    <label for="selectQuotaPaga" class="mr-sm-2">Quotas</label>
-                    <select name="quota_paga" id="selectQuotaPaga"
-                            class="custom-select custom-select-sm mb-2 mr-sm-2 mb-sm-0">
-                        <option disabled selected>Pagas</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="selectQuotaPaga" class="mr-sm-2">Quotas</label>
+                        <select name="quota_paga" id="selectQuotaPaga"
+                                class="custom-select custom-select-sm mb-2 mr-sm-2 mb-sm-0">
+                            <option disabled selected>Pagas</option>
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="selectSocioAtivo" class="mr-sm-2">Sócio</label>
-                    <select name="ativo" id="selectSocioAtivo"
-                            class="custom-select custom-select-sm mb-2 mr-sm-2 mb-sm-0">
-                        <option disabled selected>Ativo</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="selectSocioAtivo" class="mr-sm-2">Sócio</label>
+                        <select name="ativo" id="selectSocioAtivo"
+                                class="custom-select custom-select-sm mb-2 mr-sm-2 mb-sm-0">
+                            <option disabled selected>Ativo</option>
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
                 @endcan
                 <div class="form-group">
                     <label for="selectDirecao" class="mr-sm-2">Direção</label>
@@ -98,150 +98,140 @@
                                     </button>
                                 </form>
 
-                        @endcan
-                        </div>
-                        <div class="card-body">
+                                @endcan
+                            </div>
+                            <div class="card-body">
 
-                            <table class="table table-striped">
-                                <div class="col-md-9">
-                                    <thead>
-                                    <tr>
-                                        <th>Foto</th>
-                                        <th>Nº Sócio</th>
-                                        <th>Nome</th>
-                                        <th>Email</th>
-                                        <th>Tipo Sócio</th>
-                                        <th>Direção</th>
-                                        <th>nº de licença</th>
-                                        <th>Ativo</th>
-                                        @can('direcao')
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                        @endcan
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    @foreach ($socios as $socio)
+                                <table class="table table-striped">
+                                    <div class="col-md-9">
+                                        <thead>
                                         <tr>
-                                            @if(!($socio->foto_url))
-                                                <td><img class="rounded-circle"
-                                                         src=" {{asset("/storage/fotos/default.jpg")}}"
-                                                         width="50"/></td>
-                                            @else
-                                                <td><img class="rounded-circle"
-                                                         src=" {{asset("/storage/fotos/$socio->foto_url")}}"
-                                                         width="50"/>
-                                                </td>
-                                            @endif
-                                            <td>{{$socio->num_socio}}</td>
-                                            <td>{{$socio->nome_informal}}</td>
-                                            <td>{{$socio->email}}</td>
-                                            <td> @if($socio->tipo_socio == 'A')
-                                                    aeromodelista
-                                                @elseif($socio->tipo_socio == 'P')
-                                                    piloto
-                                                @else
-                                                    não piloto
-                                                @endif </td>
-                                            <td> @if($socio->direcao == '1')
-                                                    Sim
-                                                @else
-                                                    Não
-                                                @endif </td>
-                                            <td> {{$socio->num_licenca}}
-                                            </td>
-                                            <td> @if($socio->ativo == '1')
-                                                    Sim
-                                                @else
-                                                    Não
-
-                                                @endif
-                                            </td>
-
-
+                                            <th>Foto</th>
+                                            <th>Nº Sócio</th>
+                                            <th>Nome</th>
+                                            <th>Email</th>
+                                            <th>Tipo Sócio</th>
+                                            <th>Direção</th>
+                                            <th>nº de licença</th>
+                                            <th>Ativo</th>
                                             @can('direcao')
-
-                                                <div class="row">
-                                                    <td class="align-middle">
-                                                        <form action="{{action('UserController@sendReActivationEmail', ['socio' => $socio->id])}}"
-                                                              method="POST" role="form" class="inline">
-                                                            {{ csrf_field() }}
-                                                            <button type="submit" class="btn btn-sm btn-dark">
-                                                                reenviar email
-                                                                ativação
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <form action="{{ route('quota', $socio->id) }}"
-                                                              method="POST">
-                                                            {{ csrf_field() }}
-                                                            {{ method_field('PATCH') }}
-                                                            @if($socio->quota_paga == '0')
-                                                                <button type="submit" class="btn btn-sm btn-warning"
-                                                                        style="margin-top: 10px;">quota não-paga
-                                                                </button>
-                                                                <input type="hidden" name="quota_paga" value="1">
-                                                            @else
-                                                                <button type="submit" class="btn btn-sm btn-warning"
-                                                                        style="margin-top: 10px;">quota paga
-                                                                </button>
-                                                                <input type="hidden" name="quota_paga" value="0">
-                                                            @endif
-
-                                                        </form>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <form action="{{ route('ativarSocio', $socio->id) }}"
-                                                              method="POST">
-                                                            {{ csrf_field() }}
-                                                            {{ method_field('PATCH') }}
-                                                            @if($socio->ativo == '0')
-                                                                <button type="submit" class="btn btn-sm btn-warning"
-                                                                        style="margin-top: 10px;">inativo
-                                                                </button>
-                                                                <input type="hidden" name="ativo" value="1">
-                                                            @else
-                                                                <button type="submit" class="btn btn-sm btn-warning"
-                                                                        style="margin-top: 10px;">ativo
-                                                                </button>
-                                                                <input type="hidden" name="ativo" value="0">
-                                                            @endif
-
-                                                        </form>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <a class="btn btn-sm btn-primary"
-                                                           href="{{action('UserController@edit', ['socio' => $socio->id])}} ">Editar</a>
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <form action="{{action('UserController@destroy', ['socio' => $socio->id])}}"
-                                                              method="POST" role="form" class="inline">
-                                                            {{ method_field('DELETE') }}
-                                                            {{ csrf_field() }}
-                                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                                Delete
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </div>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            @endcan
                                         </tr>
-                                        @endcan
-                                    @endforeach
+                                        </thead>
+                                        <tbody>
 
-                                    <div class="row justify-content-center">{{ $socios->links() }} </div>
+                                        @foreach ($socios as $socio)
+                                            <tr>
+                                                @if(!($socio->foto_url))
+                                                    <td><img class="rounded-circle"
+                                                             src=" {{asset("/storage/fotos/default.jpg")}}"
+                                                             width="50"/></td>
+                                                @else
+                                                    <td><img class="rounded-circle"
+                                                             src=" {{asset("/storage/fotos/$socio->foto_url")}}"
+                                                             width="50"/>
+                                                    </td>
+                                                @endif
+                                                <td>{{$socio->num_socio}}</td>
+                                                <td>{{$socio->nome_informal}}</td>
+                                                <td>{{$socio->email}}</td>
+                                                <td> @if($socio->tipo_socio == 'A')
+                                                        aeromodelista
+                                                    @elseif($socio->tipo_socio == 'P')
+                                                        piloto
+                                                    @else
+                                                        não piloto
+                                                    @endif </td>
+                                                <td> @if($socio->direcao == '1')
+                                                        Sim
+                                                    @else
+                                                        Não
+                                                    @endif </td>
+                                                <td> {{$socio->num_licenca}}
+                                                </td>
+                                                <td> @if($socio->ativo == '1')
+                                                        Sim
+                                                    @else
+                                                        Não
 
-                                </div>
-                            </table>
-                        </div>
+                                                    @endif
+                                                </td>
+
+
+                                                @can('direcao')
+
+                                                    <div class="row">
+                                                        <td class="align-middle">
+                                                            <form action="{{ route('quota', $socio->id) }}"
+                                                                  method="POST">
+                                                                {{ csrf_field() }}
+                                                                {{ method_field('PATCH') }}
+                                                                @if($socio->quota_paga == '0')
+                                                                    <button type="submit" class="btn btn-sm btn-warning"
+                                                                            style="margin-top: 10px;">quota não-paga
+                                                                    </button>
+                                                                    <input type="hidden" name="quota_paga" value="1">
+                                                                @else
+                                                                    <button type="submit" class="btn btn-sm btn-warning"
+                                                                            style="margin-top: 10px;">quota paga
+                                                                    </button>
+                                                                    <input type="hidden" name="quota_paga" value="0">
+                                                                @endif
+
+                                                            </form>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <form action="{{ route('ativarSocio', $socio->id) }}"
+                                                                  method="POST">
+                                                                {{ csrf_field() }}
+                                                                {{ method_field('PATCH') }}
+                                                                @if($socio->ativo == '0')
+                                                                    <button type="submit" class="btn btn-sm btn-warning"
+                                                                            style="margin-top: 10px;">inativo
+                                                                    </button>
+                                                                    <input type="hidden" name="ativo" value="1">
+                                                                @else
+                                                                    <button type="submit" class="btn btn-sm btn-warning"
+                                                                            style="margin-top: 10px;">ativo
+                                                                    </button>
+                                                                    <input type="hidden" name="ativo" value="0">
+                                                                @endif
+
+                                                            </form>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <a class="btn btn-sm btn-primary"
+                                                               href="{{action('UserController@edit', ['socio' => $socio->id])}} ">Editar</a>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <form action="{{action('UserController@destroy', ['socio' => $socio->id])}}"
+                                                                  method="POST" role="form" class="inline">
+                                                                {{ method_field('DELETE') }}
+                                                                {{ csrf_field() }}
+                                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                                    Delete
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </div>
+                                            </tr>
+                                            @endcan
+                                        @endforeach
+
+                                        <div class="row justify-content-center">{{ $socios->links() }} </div>
+
+                                    </div>
+                                </table>
+                            </div>
                     </div>
 
                 </div>
             </div>
         </div>
-
+    </div>
 @endsection

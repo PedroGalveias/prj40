@@ -28,5 +28,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('direcao', function ($user) {
             return $user->direcao == '1';
         });
+
+        Gate::define('piloto', function ($user) {
+            return $user->tipo_socio == 'P';
+        });
     }
 }

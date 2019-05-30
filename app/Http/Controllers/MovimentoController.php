@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMovimento;
 
 use App\Movimento;
-use Exception;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class MovimentoController extends Controller
@@ -15,7 +14,7 @@ class MovimentoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -30,7 +29,7 @@ class MovimentoController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -38,8 +37,7 @@ class MovimentoController extends Controller
             $title = 'Inserir novo movimento';
             $movimento = new Movimento();
             return view('movimentos.add', compact('movimento'));
-        }
-        else{
+        } else {
             return Response(view('errors.403'), 403);
         }
 
@@ -49,24 +47,32 @@ class MovimentoController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function store(StoreMovimento $request)
     {
+        if (Gate::allows('direcao', Auth::user())) {
+            $movimento = $request->validated();
+            Movimento::create($movimento);
 
-        $movimento = $request->validated();
-        $movimento['confirmado'] = 0;
-        Movimento::create($movimento);
+            return redirect()->action('UserController@index');
 
-        return redirect()->action('UserController@index');
+        } else {
+            $movimento = $request->validated();
+            $movimento['confirmado'] = 0;
+            Movimento::create($movimento);
+
+            return redirect()->action('UserController@index');
+        }
+
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Movimento $movimento
-     * @return Response
+     * @param  \App\Movimento $movimento
+     * @return \Illuminate\Http\Response
      */
     public function show(Movimento $movimento)
     {
@@ -76,16 +82,16 @@ class MovimentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Movimento $movimento
-     * @return Response
+     * @param  \App\Movimento $movimento
+     * @return \Illuminate\Http\Response
      */
     public function edit(Movimento $movimento)
     {
-        if ((Auth::user()->id == $movimento->piloto_id && $movimento->confirmacao==0) || (Auth::user()->id == $movimento->instrutor_id && $movimento->confirmacao==0)|| (Auth::user()->direcao == 1 && $movimento->confirmacao==0)) {
+        if ((Auth::user()->id == $movimento->piloto_id && $movimento->confirmacao == 0) || (Auth::user()->id == $movimento->instrutor_id && $movimento->confirmacao == 0) || (Auth::user()->direcao == 1 && $movimento->confirmacao == 0)) {
             $title = "Editar movimento";
 
             return view('movimentos.edit', compact('title', 'movimento'));
-        }else{
+        } else {
             return Response(view('errors.403'), 403);
         }
     }
@@ -94,8 +100,8 @@ class MovimentoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param Movimento $movimento
-     * @return Response
+     * @param  \App\Movimento $movimento
+     * @return \Illuminate\Http\Response
      */
     public function update(StoreMovimento $request, Movimento $movimento)
     {
@@ -114,20 +120,27 @@ class MovimentoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Movimento $movimento
-     * @return Response
-     * @throws Exception
+     * @param  \App\Movimento $movimento
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Movimento $movimento)
     {
-        if (Movimento::where('movimento', $movimento->confirmado) == false) {
+            if (Movimento::where('movimento', $movimento->confirmado) == false) {
             $movimento->forceDelete();
         } else {
             $movimento->delete();
         }
 
-        return redirect()->back()->with('success', 'Movement deleted successfully!');
+        // Outra Versão
+
+        /*
+        $movimento=Movimento::findOrFail($id);
+        $movimento->delete();
+        */
+
+        return redirect()->back()->with('success', 'Movimento apagado com sucesso!');
     }
+
     public static function filter(Request $request)
     {
         if ($movimentos = Movimento::where('id', '<>', -1)) {
@@ -157,5 +170,10 @@ class MovimentoController extends Controller
                 ->paginate(25);
         }
         return $movimentos;
+    }
+
+        public function estatisticas(Movimento $movimento)
+    {
+        return view('movimentos.estatisticas', compact('movimento'));
     }
 }

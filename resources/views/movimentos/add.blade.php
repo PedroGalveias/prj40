@@ -58,6 +58,15 @@
                             </div>
                         </div>
 
+                                                <div class="form-group">
+                            <label for="num_certificado_piloto" class="col-sm-4 col-form-label"> Nº de Certificado do
+                                Piloto</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="num_certificado_piloto" class="form-control"
+                                       id="num_certificado_piloto" placeholder="num_certificado_piloto"/>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="validade_certificado_piloto" class="col-sm-4 col-form-label"> Validade do
                                 Certificado do Piloto</label>
@@ -67,12 +76,19 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+ <div class="form-group">
                             <label for="classe_certificado_piloto" class="col-sm-4 col-form-label"> Classe do
                                 Certificado do Piloto</label>
                             <div class="col-sm-10">
-                                <input type="text" name="classe_certificado_piloto" class="form-control"
-                                       id="classe_certificado_piloto" placeholder="classe_certificado_piloto"/>
+                                <p>
+                                    <select name="classe_certificado_piloto">
+                                        <option disabled selected="">Selecione...</option>
+                                        <option value="Class 1">Class 1 medical certificate</option>
+                                        <option value="Class 2">Class 2 medical certificate</option>
+                                        <option value="LAPL"> Light Aircraft Pilot Licence Medical
+                                        </option>
+                                    </select>
+                                </p>
                             </div>
                         </div>
 
@@ -105,7 +121,7 @@
                         <div class="form-group">
                             <label for="tempo_voo" class="col-sm-4 col-form-label"> Tempo Voo </label>
                             <div class="col-sm-10">
-                                <input type="text" name="tempo_voo" class="form-control" id="tempo_voo"
+                                <input type="number" name="tempo_voo" class="form-control" id="tempo_voo"
                                        placeholder="tempo_voo"/>
                             </div>
                         </div>
@@ -258,7 +274,7 @@
                         <div class="form-group">
                             <label for="num_aterragens" class="col-sm-4 col-form-label"> Nº Aterragens </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_aterragens" class="form-control" id="num_aterragens"
+                                <input type="number" name="num_aterragens" class="form-control" id="num_aterragens"
                                        placeholder="num_aterragens"/>
 
                             </div>
@@ -267,7 +283,7 @@
                         <div class="form-group">
                             <label for="num_descolagens" class="col-sm-4 col-form-label"> Nº Descolagens </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_descolagens" class="form-control" id="num_descolagens"
+                                <input type="number" name="num_descolagens" class="form-control" id="num_descolagens"
                                        placeholder="num_descolagens"/>
 
                             </div>
@@ -276,7 +292,7 @@
                         <div class="form-group">
                             <label for="num_diario" class="col-sm-4 col-form-label"> Nº Diário </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_diario" class="form-control" id="num_diario"
+                                <input type="number" name="num_diario" class="form-control" id="num_diario"
                                        placeholder="num_diario"/>
 
                             </div>
@@ -285,7 +301,7 @@
                         <div class="form-group">
                             <label for="num_servico" class="col-sm-4 col-form-label"> Nº Serviço </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_servico" class="form-control" id="num_servico"
+                                <input type="number" name="num_servico" class="form-control" id="num_servico"
                                        placeholder="num_servico"/>
 
                             </div>
@@ -294,7 +310,7 @@
                         <div class="form-group">
                             <label for="conta_horas_inicio" class="col-sm-4 col-form-label"> Conta-Horas Início </label>
                             <div class="col-sm-10">
-                                <input type="text" name="conta_horas_inicio" class="form-control"
+                                <input type="number" name="conta_horas_inicio" class="form-control"
                                        id="conta_horas_inicio" placeholder="conta_horas_inicio"/>
 
                             </div>
@@ -303,7 +319,7 @@
                         <div class="form-group">
                             <label for="conta_horas_fim" class="col-sm-4 col-form-label"> Conta-Horas Fim </label>
                             <div class="col-sm-10">
-                                <input type="text" name="conta_horas_fim" class="form-control" id="conta_horas_fim"
+                                <input type="number" name="conta_horas_fim" class="form-control" id="conta_horas_fim"
                                        placeholder="conta_horas_fim"/>
 
                             </div>
@@ -312,7 +328,7 @@
                         <div class="form-group">
                             <label for="num_pessoas" class="col-sm-4 col-form-label"> Nº Pessoas </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_pessoas" class="form-control" id="num_pessoas"
+                                <input type="number" name="num_pessoas" class="form-control" id="num_pessoas"
                                        placeholder="num_pessoas"/>
 
                             </div>
@@ -358,7 +374,7 @@
                         <div class="form-group">
                             <label for="preco_voo" class="col-sm-4 col-form-label"> Preço do Voo </label>
                             <div class="col-sm-10">
-                                <input type="text" name="preco_voo" class="form-control" id="preco_voo"
+                                <input type="number" name="preco_voo" class="form-control" id="preco_voo"
                                        placeholder="preco_voo"/>
 
                             </div>
@@ -367,12 +383,26 @@
                         <div class="form-group">
                             <label for="num_recibo" class="col-sm-4 col-form-label"> Nº do Recibo </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_recibo" class="form-control" id="num_recibo"
+                                <input type="number" name="num_recibo" class="form-control" id="num_recibo"
                                        placeholder="num_recibo"/>
 
                             </div>
                         </div>
+                        @can('direcao'  )
+                            <div class="form-group">
+                                <label for="confirmado" class="col-sm-4 col-form-label"> confirmado </label>
+                                <div class="col-sm-10">
+                                    <p>
+                                        <select name="confirmado">
 
+                                            <option value="0">Sim</option>
+                                            <option value="1">Não</option>
+
+                                        </select>
+                                    </p>
+                                </div>
+                            </div>
+                        @endcan
                         <div class="form-group">
                             <label for="observacoes" class="col-sm-4 col-form-label"> Observações </label>
                             <div class="col-sm-10">

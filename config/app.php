@@ -176,6 +176,11 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+                /*
+         * Lavacharts is a wrapper for Google's powerful Javascript Chart API
+         */
+        Khill\Lavacharts\Laravel\LavachartsServiceProvider::class,
+
     ],
 
     /*
@@ -226,6 +231,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
 
     ],
 

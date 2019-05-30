@@ -14,7 +14,7 @@ class Aeronave extends Model
     {
         return hasMany("App\Movimento", "aeronave", "matricula");
     }
-
+    
     protected $fillable = [
         'matricula', 'marca', 'modelo', 'num_lugares', 'conta_horas', 'preco_hora'
     ];

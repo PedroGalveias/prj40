@@ -43,13 +43,17 @@
                                            href="{{action('MovimentoController@index')}}"><strong>Lista
                                                 de movimentos</strong></a>
                                     </li>
+                                    @can('piloto')
+                                        <li>
+                                            <a class="nav-link"
+                                               href="{{action('MovimentoController@create')}}"><strong>adicionar
+                                                    movimento</strong></a>
+                                        </li>
+                                    @endcan
                                 </ul>
 
                             </div>
                         </nav>
-
-
-
 
 
                     </div>

@@ -12,7 +12,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <form method="POST" action="{{action('UserController@update',$socio)}}"
-                          encrypte="multipart/form-data">
+                          enctype="multipart/form-data">
 
                         @method('PUT')
 
@@ -22,13 +22,15 @@
                             <div class="profile-header-container">
                                 <div class="profile-header-img">
                                     @if(!($socio->foto_url))
-                                        <td><img class="rounded-circle" src=" {{asset("/storage/fotos/default.jpg")}}" width="100"/></td>
+                                        <td><img class="rounded-circle" src=" {{asset("/storage/fotos/default.jpg")}}"
+                                                 width="100"/></td>
                                     @else
-                                        <td><img class="rounded-circle" src=" {{asset("/storage/fotos/$socio->foto_url")}}" width="100"/></td>
-                                    @endif
+                                        <td><img class="rounded-circle"
+                                                 src=" {{asset("/storage/fotos/$socio->foto_url")}}" width="100"/></td>
+                                @endif
 
 
-                                    <!-- badge -->
+                                <!-- badge -->
                                     <div class="row justify-content-center">
                                         <span class="label label-default rank-label">{{$socio->name}}</span>
                                     </div>
@@ -106,6 +108,22 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="ativo" class="col-sm-4 col-form-label">Ativo</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="ativo">
+                                        <option value="1" {{old('ativo', $socio->ativo) == '1' ? 'selected' : ''}}>
+                                            Sim
+                                        </option>
+                                        <option value="0" {{old('ativo', $socio->ativo) == '0' ? 'selected' : ''}}>
+                                            Não
+                                        </option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+
                         @else
                             <div class="form-group">
 
@@ -178,6 +196,53 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="ativo" class="col-sm-4 col-form-label">Ativo</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="ativo" disabled>
+                                        <option value="1" {{old('ativo', $socio->ativo) == '1' ? 'selected' : ''}}>
+                                            Sim
+                                        </option>
+                                        <option value="0" {{old('ativo', $socio->ativo) == '0' ? 'selected' : ''}}>
+                                            Não
+                                        </option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            @can('piloto')
+                                <div class="form-group">
+                                    <label for="licenca_confirmada" class="col-sm-4 col-form-label">licenca
+                                        confirmada</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="licenca_confirmada" disabled>
+                                            <option value="1" {{old('licenca_confirmada', $socio->licenca_confirmada) == '1' ? 'selected' : ''}}>
+                                                Sim
+                                            </option>
+                                            <option value="0" {{old('licenca_confirmada', $socio->licenca_confirmada) == '0' ? 'selected' : ''}}>
+                                                Não
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="certificado_confirmado" class="col-sm-4 col-form-label">certificado
+                                        confirmado</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="certificado_confirmado" disabled>
+                                            <option value="1" {{old('certificado_confirmado', $socio->certificado_confirmado) == '1' ? 'selected' : ''}}>
+                                                Sim
+                                            </option>
+                                            <option value="0" {{old('certificado_confirmado', $socio->certificado_confirmado) == '0' ? 'selected' : ''}}>
+                                                Não
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            @endcan
                         @endif
 
                         <div class="form-group">
@@ -207,7 +272,7 @@
 
                         <div class="form-group">
                             <label for="foto" class="col-sm-4 col-form-label">Upload Foto Perfil</label>
-                            <input type="file" name="foto" id="foto" class="form-control" accept=".jpg,.jpeg,.png">
+                            <input type="file" name="foto_file" id="foto" class="form-control" accept=".jpg,.jpeg,.png">
                         </div>
                         <div class="form-group">
                             <label for="data_nascimento" class="col-sm-4 col-form-label"> Data nascimento </label>
@@ -292,21 +357,7 @@
                                            value="{{old('validade_licenca', $socio->validade_licenca)}}"/>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="licenca_confirmada" class="col-sm-4 col-form-label">licenca
-                                    confirmada</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="licenca_confirmada">
-                                        <option value="1" {{old('licenca_confirmada', $socio->licenca_confirmada) == '1' ? 'selected' : ''}}>
-                                            Sim
-                                        </option>
-                                        <option value="0" {{old('licenca_confirmada', $socio->licenca_confirmada) == '0' ? 'selected' : ''}}>
-                                            Não
-                                        </option>
 
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="form-group">
                                 <label for="num_certificado" class="col-sm-4 col-form-label"> Número
@@ -315,6 +366,14 @@
                                     <input type="text" name="num_certificado" class="form-control" id="num_certificado"
                                            placeholder="num_certificado"
                                            value="{{old('num_certificado', $socio->num_certificado)}}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="num_licenca" class="col-sm-4 col-form-label"> Número licença </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="num_licenca" class="form-control" id="num_licenca"
+                                           placeholder="num_licenca"
+                                           value="{{old('num_licenca', $socio->num_licenca)}}"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -336,6 +395,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="validade_certificado" class="col-sm-4 col-form-label"> validade
                                     certificado</label>
@@ -345,21 +405,40 @@
                                            value="{{old('validade_certificado', $socio->validade_certificado)}}"/>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="certificado_confirmado" class="col-sm-4 col-form-label">certificado
-                                    confirmado</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="certificado_confirmado">
-                                        <option value="1" {{old('certificado_confirmado', $socio->certificado_confirmado) == '1' ? 'selected' : ''}}>
-                                            Sim
-                                        </option>
-                                        <option value="0" {{old('certificado_confirmado', $socio->certificado_confirmado) == '0' ? 'selected' : ''}}>
-                                            Não
-                                        </option>
+                            @can('direcao')
+                                <div class="form-group">
+                                    <label for="licenca_confirmada" class="col-sm-4 col-form-label">licenca
+                                        confirmada</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="licenca_confirmada">
+                                            <option value="1" {{old('licenca_confirmada', $socio->licenca_confirmada) == '1' ? 'selected' : ''}}>
+                                                Sim
+                                            </option>
+                                            <option value="0" {{old('licenca_confirmada', $socio->licenca_confirmada) == '0' ? 'selected' : ''}}>
+                                                Não
+                                            </option>
 
-                                    </select>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="form-group">
+                                    <label for="certificado_confirmado" class="col-sm-4 col-form-label">certificado
+                                        confirmado</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="certificado_confirmado">
+                                            <option value="1" {{old('certificado_confirmado', $socio->certificado_confirmado) == '1' ? 'selected' : ''}}>
+                                                Sim
+                                            </option>
+                                            <option value="0" {{old('certificado_confirmado', $socio->certificado_confirmado) == '0' ? 'selected' : ''}}>
+                                                Não
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            @endcan
+                        @else
 
                             <div class="form-group">
                                 <td><a href="{{route('licenca',['piloto' => $socio])}}">licenca.pdf</a>&nbsp
@@ -379,11 +458,22 @@
                         @endif
 
                         <div class="form-group">
-                            <input type="submit" class="btn btn-success" name="ok" value="guardar">
-                            <a class="btn btn-primary" href="{{action('UserController@index')}}">voltar</a>
+                            <input type="submit" class="btn btn-sm btn-success" name="ok" value="guardar">
+                            <a class="btn btn-sm btn-primary" href="{{action('UserController@index')}}">voltar</a>
 
+                            @can('direcao')
+                                @if(Auth::user()->id != $socio->id)
+                                    <form action="{{action('UserController@sendReActivationEmail', ['socio' => $socio->id])}}"
+                                          method="POST" role="form" class="inline">
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-sm btn-dark">
+                                            reenviar email
+                                            ativação
+                                        </button>
+                                    </form>
+                                @endif
+                            @endcan
                         </div>
-
                     </form>
                 </div>
             </div>

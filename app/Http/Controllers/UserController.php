@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Aeronave;
 use App\Http\Requests\StoreSocio;
 use App\Movimento;
 
@@ -68,24 +69,23 @@ class UserController extends Controller
      */
     public function store(StoreSocio $request)
     {
-        $name = $request->foto_url;
+        dd($request);
+        $image = $request->file('foto_url');
 
-        if ($name != null) {
-            if ($name->isValid()) {
-                Storage::putFile('/storage/fotos/', $request->file('foto_url'));
+        if ($request->hasFile('foto_url')) {
+            if ($request->file('foto_url')->isValid()) {
+                Storage::putFile('/storage/app/public/fotos/', $request->file('foto_url'));
+                $name = time() . '.' . $image->getClientOriginalExtension();
             }
+
         }
 
         $socio = $request->validated();
-
+        //$socio->image = $name;
         $num_socio = User::max('num_socio');
         $socio['num_socio'] = ++$num_socio;
         $socio['password'] = Hash::make($socio['data_nascimento']);
 
-
-        if ($name != null) {
-            $socio['foto_url']->foto_url = $name;
-        }
         $user = User::create($socio);
         $user->sendEmailVerificationNotification();
 
@@ -112,9 +112,14 @@ class UserController extends Controller
      */
     public function edit(User $socio)
     {
+        if (Auth::user()->direcao == 1 || Auth::user()->id == $socio->id) {
+            $title = "Editar Sócio";
+            return view('socios.edit', compact('title', 'socio'));
 
-        $title = "Editar Sócio";
-        return view('socios.edit', compact('title', 'socio'));
+        } else {
+            return Response(view('errors.403'), 403);
+
+        }
 
 
     }
@@ -128,6 +133,17 @@ class UserController extends Controller
      */
     public function update(UpdateSocio $request, User $socio)
     {
+
+        $image = $request->file('foto_file');
+
+        if ($request->hasFile('foto_file')) {
+            if ($request->file('foto_file')->isValid()) {
+                Storage::putFile('/storage/app/public/fotos/', $request->file('foto_file'));
+                $name = time() . '.' . $image->getClientOriginalExtension();
+            }
+
+        }
+
         $socioEdit = $request->validated();
 
         $keys = array_keys($socioEdit, null, true);
@@ -135,15 +151,13 @@ class UserController extends Controller
         foreach ($keys as $key) {
             unset($socioEdit[$key]);
         }
-        /*  if (Auth::user()->tipo_socio =='P'){
-              User::where(licenca_confirmada,'1')->update(licenca_confirmada,'0');
-              User::where(certificado_confirmado,'1')->update(certificado_confirmado,'0');
-
-          }
-  */
+        $socio->foto_url = $name;
         $socio->fill($socioEdit);
         $socio->save();
-
+        if (Auth::user()->tipo_socio == 'P') {
+            User::where('licenca_confirmada', '1')->update(['licenca_confirmada' => '0']);
+            User::where('certificado_confirmado', '1')->update(['certificado_confirmado' => '0']);
+        }
 
         return redirect()->action('UserController@index');
     }
@@ -283,6 +297,15 @@ class UserController extends Controller
             ->paginate(24);
         return $users;
     }
+    public function listaPilotosAutorizados(Aeronave $aeronave)
+    {
+        $pilotosAutorizados = DB::table('aeronaves_pilotos')->pluck('piloto_id');
+        //where in aeronave = qualquer coisa
 
+        $listaPilotos= User::whereIn('id',$pilotosAutorizados)->get();
+        //para pilotos nao autorizados whereNotIN
+        return view('users.listaAutorizados', compact('title', 'listaPilotos'));
+
+    }
 
 }
