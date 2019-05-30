@@ -46,7 +46,7 @@ class MovimentoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreMovimento $request)
@@ -71,7 +71,7 @@ class MovimentoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Movimento $movimento
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function show(Movimento $movimento)
@@ -82,7 +82,7 @@ class MovimentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Movimento $movimento
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function edit(Movimento $movimento)
@@ -99,8 +99,8 @@ class MovimentoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Movimento $movimento
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function update(StoreMovimento $request, Movimento $movimento)
@@ -120,12 +120,12 @@ class MovimentoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Movimento $movimento
+     * @param \App\Movimento $movimento
      * @return \Illuminate\Http\Response
      */
     public function destroy(Movimento $movimento)
     {
-            if (Movimento::where('movimento', $movimento->confirmado) == false) {
+        if (Movimento::where('movimento', $movimento->confirmado) == false) {
             $movimento->forceDelete();
         } else {
             $movimento->delete();
@@ -172,7 +172,7 @@ class MovimentoController extends Controller
         return $movimentos;
     }
 
-        public function estatisticas(Movimento $movimento)
+    public function estatisticas(Movimento $movimento)
     {
         return view('movimentos.estatisticas', compact('movimento'));
     }
