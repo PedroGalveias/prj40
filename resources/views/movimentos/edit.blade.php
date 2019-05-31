@@ -19,7 +19,7 @@
                             <label for="aeronave" class="col-sm-4 col-form-label"> Matricula aeronave </label>
                             <div class="col-sm-10">
                                 <input type="text" name="aeronave" class="form-control" id="aeronave"
-                                       placeholder="aeronave" value="{{old('aeronave',$movimento->aeronave)}}"/>
+                                       value="{{old('aeronave',$movimento->aeronave)}}"/>
                             </div>
                         </div>
 
@@ -27,7 +27,7 @@
                             <label for="num_licenca_piloto" class="col-sm-4 col-form-label"> Nº licença Piloto</label>
                             <div class="col-sm-10">
                                 <input type="text" name="num_licenca_piloto" class="form-control"
-                                       id="num_licenca_piloto" placeholder="num_licenca_piloto"/>
+                                       id="num_licenca_piloto" value="{{old('num_licenca_piloto', $movimento->num_licenca_piloto)}}"/>
                             </div>
                         </div>
 
@@ -36,7 +36,7 @@
                                 Piloto</label>
                             <div class="col-sm-10">
                                 <input type="date" name="validade_licenca_piloto" class="form-control"
-                                       id="validade_licenca_piloto" placeholder="validade_licenca_piloto"/>
+                                       id="validade_licenca_piloto" value="{{old('validade_licenca_piloto', $movimento->validade_licenca_piloto)}}"/>
                             </div>
                         </div>
 
@@ -63,7 +63,7 @@
                                 Piloto</label>
                             <div class="col-sm-10">
                                 <input type="text" name="num_certificado_piloto" class="form-control"
-                                       id="num_certificado_piloto" placeholder="num_certificado_piloto"/>
+                                       id="num_certificado_piloto" value="{{old('num_certificado_piloto', $movimento->num_certificado_piloto)}}"/>
                             </div>
                         </div>
 
@@ -72,7 +72,7 @@
                                 Certificado do Piloto</label>
                             <div class="col-sm-10">
                                 <input type="date" name="validade_certificado_piloto" class="form-control"
-                                       id="validade_certificado_piloto" placeholder="validade_certificado_piloto"/>
+                                       id="validade_certificado_piloto" value="{{old('validade_certificado_piloto', $movimento->validade_certificado_piloto)}}"/>
                             </div>
                         </div>
 
@@ -95,7 +95,7 @@
                         <div class="form-group">
                             <label for="data" class="col-sm-4 col-form-label"> Data </label>
                             <div class="col-sm-10">
-                                <input type="date" name="data" class="form-control" id="data" placeholder="data"/>
+                                <input type="date" name="data" class="form-control" id="data" value="{{old('data', $movimento->data)}}"/>
 
                             </div>
                         </div>
@@ -103,8 +103,8 @@
                         <div class="form-group">
                             <label for="hora_descolagem" class="col-sm-4 col-form-label"> Hora Descolagem </label>
                             <div class="col-sm-10">
-                                <input type="datetime-local" name="hora_descolagem" class="form-control"
-                                       id="hora_descolagem" placeholder="hora_descolagem"/>
+                                <input type="datetime" name="hora_descolagem" class="form-control"
+                                       id="hora_descolagem" value="{{old('hora_descolagem', $movimento->hora_descolagem)}}"/>
 
                             </div>
                         </div>
@@ -112,8 +112,8 @@
                         <div class="form-group">
                             <label for="hora_aterragem" class="col-sm-4 col-form-label"> Hora Aterragem </label>
                             <div class="col-sm-10">
-                                <input type="datetime-local" name="hora_aterragem" class="form-control"
-                                       id="hora_aterragem" placeholder="hora_aterragem"/>
+                                <input type="datetime" name="hora_aterragem" class="form-control"
+                                       id="hora_aterragem" value="{{old('hora_aterragem', $movimento->hora_aterragem)}}"/>
 
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                             <label for="tempo_voo" class="col-sm-4 col-form-label"> Tempo Voo </label>
                             <div class="col-sm-10">
                                 <input type="number" name="tempo_voo" class="form-control" id="tempo_voo"
-                                       placeholder="tempo_voo"/>
+                                       value="{{old('tempo_voo', $movimento->tempo_voo)}}"/>
                             </div>
                         </div>
 
@@ -144,7 +144,7 @@
                             <label for="piloto_id" class="col-sm-4 col-form-label"> Id Piloto </label>
                             <div class="col-sm-10">
                                 <input type="text" name="piloto_id" class="form-control" id="piloto_id"
-                                       placeholder="piloto_id"/>
+                                       value="{{old('piloto_id', $movimento->piloto_id)}}"/>
 
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                             <label for="num_aterragens" class="col-sm-4 col-form-label"> Nº Aterragens </label>
                             <div class="col-sm-10">
                                 <input type="number" name="num_aterragens" class="form-control" id="num_aterragens"
-                                       placeholder="num_aterragens"/>
+                                       value="{{old('num_aterragens', $movimento->num_aterragens)}}"/>
 
                             </div>
                         </div>
@@ -284,7 +284,7 @@
                             <label for="num_descolagens" class="col-sm-4 col-form-label"> Nº Descolagens </label>
                             <div class="col-sm-10">
                                 <input type="number" name="num_descolagens" class="form-control" id="num_descolagens"
-                                       placeholder="num_descolagens"/>
+                                       value="{{old('num_descolagens', $movimento->num_descolagens)}}"/>
 
                             </div>
                         </div>
@@ -293,7 +293,7 @@
                             <label for="num_diario" class="col-sm-4 col-form-label"> Nº Diário </label>
                             <div class="col-sm-10">
                                 <input type="number" name="num_diario" class="form-control" id="num_diario"
-                                       placeholder="num_diario"/>
+                                       value="{{old('num_diario', $movimento->num_diario)}}"/>
 
                             </div>
                         </div>
@@ -302,7 +302,7 @@
                             <label for="num_servico" class="col-sm-4 col-form-label"> Nº Serviço </label>
                             <div class="col-sm-10">
                                 <input type="number" name="num_servico" class="form-control" id="num_servico"
-                                       placeholder="num_servico"/>
+                                       value="{{old('num_servico', $movimento->num_servico)}}"/>
 
                             </div>
                         </div>
@@ -311,7 +311,7 @@
                             <label for="conta_horas_inicio" class="col-sm-4 col-form-label"> Conta-Horas Início </label>
                             <div class="col-sm-10">
                                 <input type="number" name="conta_horas_inicio" class="form-control"
-                                       id="conta_horas_inicio" placeholder="conta_horas_inicio"/>
+                                       id="conta_horas_inicio" value="{{old('conta_horas_inicio', $movimento->conta_horas_inicio)}}"/>
 
                             </div>
                         </div>
@@ -320,7 +320,7 @@
                             <label for="conta_horas_fim" class="col-sm-4 col-form-label"> Conta-Horas Fim </label>
                             <div class="col-sm-10">
                                 <input type="number" name="conta_horas_fim" class="form-control" id="conta_horas_fim"
-                                       placeholder="conta_horas_fim"/>
+                                       value="{{old('conta_horas_fim', $movimento->conta_horas_fim)}}"/>
 
                             </div>
                         </div>
@@ -329,7 +329,7 @@
                             <label for="num_pessoas" class="col-sm-4 col-form-label"> Nº Pessoas </label>
                             <div class="col-sm-10">
                                 <input type="number" name="num_pessoas" class="form-control" id="num_pessoas"
-                                       placeholder="num_pessoas"/>
+                                       value="{{old('num_pessoas', $movimento->num_pessoas)}}"/>
 
                             </div>
                         </div>
@@ -350,8 +350,8 @@
                         <div class="form-group">
                             <label for="instrutor_id" class="col-sm-4 col-form-label"> Id Instrutor </label>
                             <div class="col-sm-10">
-                                <input type="text" name="instrutor_id" class="form-control" id="instrutor_id"
-                                       placeholder="instrutor_id"/>
+                                <input type="number" name="instrutor_id" class="form-control" id="instrutor_id"
+                                       value="{{old('instrutor_id', $movimento->instrutor_id)}}"/>
 
                             </div>
                         </div>
@@ -375,7 +375,7 @@
                             <label for="preco_voo" class="col-sm-4 col-form-label"> Preço do Voo </label>
                             <div class="col-sm-10">
                                 <input type="number" name="preco_voo" class="form-control" id="preco_voo"
-                                       placeholder="preco_voo"/>
+                                       value="{{old('preco_voo', $movimento->preco_voo)}}"/>
 
                             </div>
                         </div>
@@ -384,7 +384,7 @@
                             <label for="num_recibo" class="col-sm-4 col-form-label"> Nº do Recibo </label>
                             <div class="col-sm-10">
                                 <input type="number" name="num_recibo" class="form-control" id="num_recibo"
-                                       placeholder="num_recibo"/>
+                                       value="{{old('num_recibo', $movimento->num_recibo)}}"/>
 
                             </div>
                         </div>
@@ -393,13 +393,13 @@
                             <label for="observacoes" class="col-sm-4 col-form-label"> Observações </label>
                             <div class="col-sm-10">
                                 <input type="text" name="observacoes" class="form-control" id="observacoes"
-                                       placeholder="observacoes"/>
+                                       value="{{old('observacoes', $movimento->observacoes)}}"/>
 
                             </div>
                         </div>
                         @if(Auth::user()->direcao == '1')
                             <div class="form-group">
-                                <label for="confirmado" class="col-sm-4 col-form-label"> confirmado </label>
+                                <label for="confirmado" class="col-sm-4 col-form-label"> Confirmado </label>
                                 <div class="col-sm-10">
 
                                     <p>
@@ -412,7 +412,7 @@
                             </div>
                         @else
                             <div class="form-group">
-                                <label for="confirmado" class="col-sm-4 col-form-label"> confirmado </label>
+                                <label for="confirmado" class="col-sm-4 col-form-label"> Confirmado </label>
                                 <div class="col-sm-10">
                                     <input type="hidden" name="confirmado" value="0">
                                     <p>
