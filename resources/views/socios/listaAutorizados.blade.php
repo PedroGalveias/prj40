@@ -1,82 +1,68 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row align-items-center justify-content-center">
-        <div class="col-md-9">
+    <div class="container">
+        <div class="row">
+            <div class="table-responsive col-md-6">
+                <table class="table table-hover table-light table-sm">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Nº Sócio</th>
+                        <th>Nome</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($pilotosAuto as $pilotoAuto)
 
-
-            <div class="container">
-                <div class="row justify-content-center">
-
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">Sócios</div>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <div class="col-md-9">
-                                        <thead>
-                                        <tr>
-                                            <th>Foto</th>
-                                            <th>Nº Sócio</th>
-                                            <th>Nome</th>
-                                            <th>Email</th>
-                                            <th>Tipo Sócio</th>
-                                            <th>Direção</th>
-                                            <th>nº de licença</th>
-                                            <th>Ativo</th>
-
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        @foreach ($socios as $socio)
-                                            <tr>
-                                                @if(!($socio->foto_url))
-                                                    <td><img class="rounded-circle"
-                                                             src=" {{asset("/storage/fotos/default.jpg")}}"
-                                                             width="50"/></td>
-                                                @else
-                                                    <td><img class="rounded-circle"
-                                                             src=" {{asset("/storage/fotos/$socio->foto_url")}}"
-                                                             width="50"/>
-                                                    </td>
-                                                @endif
-                                                <td>{{$socio->num_socio}}</td>
-                                                <td>{{$socio->nome_informal}}</td>
-                                                <td>{{$socio->email}}</td>
-                                                <td> @if($socio->tipo_socio == 'A')
-                                                        aeromodelista
-                                                    @elseif($socio->tipo_socio == 'P')
-                                                        piloto
-                                                    @else
-                                                        não piloto
-                                                    @endif </td>
-                                                <td> @if($socio->direcao == '1')
-                                                        Sim
-                                                    @else
-                                                        Não
-                                                    @endif </td>
-                                                <td> {{$socio->num_licenca}}
-                                                </td>
-                                                <td> @if($socio->ativo == '1')
-                                                        Sim
-                                                    @else
-                                                        Não
-
-                                                    @endif
-                                                </td>
-
-                                                @endforeach
-
-                                                <div class="row justify-content-center">{{ $socios->links() }} </div>
-
-                                    </div>
-                                </table>
+                        <tr>
+                            <td>{{$pilotoAuto->num_socio}}</td>
+                            <td>{{$pilotoAuto->nome_informal}}</td>
+                            <div class="row">
+                                <td>
+                                    <form action=""
+                                          method="POST" role="form" class="inline">
+                                        {{ method_field('DELETE') }}
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-sm btn-secondary">
+                                            Deletar
+                                        </button>
+                                    </form>
+                                </td>
                             </div>
-                        </div>
+                        </tr>
+                    @endforeach
 
-                    </div>
-                </div>
+                </table>
+            </div>
+
+            <div class="table-responsive col-md-6">
+                <table class="table table-hover table-light table-sm ">
+                    <thead class="thead-light">
+                    <tr>
+                        <th></th>
+                        <th>Nº Sócio</th>
+                        <th>Nome</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($pilotosNaoAuto as $pilotoNaoAuto)
+                        <tr>
+                            <td>
+                                <form action=""
+                                      method="POST" role="form" class="inline">
+                                    {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        Adicionar
+                                    </button>
+                                </form>
+                            </td>
+                            <td>{{$pilotoNaoAuto->num_socio}}</td>
+                            <td>{{$pilotoNaoAuto->nome_informal}}</td>
+
+                        </tr>
+                    @endforeach
+                </table>
             </div>
         </div>
     </div>

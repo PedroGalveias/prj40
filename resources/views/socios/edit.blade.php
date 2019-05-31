@@ -140,6 +140,7 @@
                                 <label for="tipo_socio" class="col-sm-4 col-form-label"> Tipo Sócio </label>
 
                                 <div class="col-sm-10">
+                                    <input type="hidden" name="tipo_socio" value="{{$socio->tipo_socio}}">
                                     <select class="form-control" name="tipo_socio" disabled>
                                         <option value="P" {{old('tipo_socio', $socio->tipo_socio) == 'P' ? 'selected' : ''}}>
                                             Piloto
@@ -155,7 +156,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="sexo" class="col-sm-4 col-form-label"> Genero </label>
+                                <label for="sexo" class="col-sm-4 col-form-label"> Sexo </label>
+                                <input type="hidden" name="sexo" value="{{$socio->sexo}}">
                                 <div class="col-sm-10">
                                     <select class="form-control" name="sexo" disabled>
                                         <option value="{{$socio->sexo}}" {{old('sexo', $socio->sexo) == 'F' ? 'selected' : ''}}>
@@ -170,11 +172,12 @@
                             <div class="form-group">
                                 <label for="quota_paga" class="col-sm-4 col-form-label">Quota </label>
                                 <div class="col-sm-10">
+                                    <input type="hidden" name="quota_paga" value="{{$socio->quota_paga}}">
                                     <select class="form-control" name="quota_paga" disabled>
-                                        <option value="1" {{old('quota_paga', $socio->quota_paga) == '1' ? 'selected' : ''}}>
+                                        <option value="" {{old('quota_paga', $socio->quota_paga) == '1' ? 'selected' : ''}}>
                                             Sim
                                         </option>
-                                        <option value="0" {{old('quota_paga', $socio->quota_paga) == '0' ? 'selected' : ''}}>
+                                        <option value="" {{old('quota_paga', $socio->quota_paga) == '0' ? 'selected' : ''}}>
                                             Não
                                         </option>
 
@@ -185,11 +188,12 @@
                             <div class="form-group">
                                 <label for="direcao" class="col-sm-4 col-form-label">Direção</label>
                                 <div class="col-sm-10">
+                                    <input type="hidden" name="direcao" value="{{$socio->direcao}}">
                                     <select class="form-control" name="direcao" disabled>
-                                        <option value="1" {{old('direcao', $socio->direcao) == '1' ? 'selected' : ''}}>
+                                        <option value="" {{old('direcao', $socio->direcao) == '1' ? 'selected' : ''}}>
                                             Sim
                                         </option>
-                                        <option value="0" {{old('direcao', $socio->direcao) == '0' ? 'selected' : ''}}>
+                                        <option value="" {{old('direcao', $socio->direcao) == '0' ? 'selected' : ''}}>
                                             Não
                                         </option>
 
@@ -199,11 +203,12 @@
                             <div class="form-group">
                                 <label for="ativo" class="col-sm-4 col-form-label">Ativo</label>
                                 <div class="col-sm-10">
+                                    <input type="hidden" name="ativo" value="{{$socio->ativo}}">
                                     <select class="form-control" name="ativo" disabled>
-                                        <option value="1" {{old('ativo', $socio->ativo) == '1' ? 'selected' : ''}}>
+                                        <option value="" {{old('ativo', $socio->ativo) == '1' ? 'selected' : ''}}>
                                             Sim
                                         </option>
-                                        <option value="0" {{old('ativo', $socio->ativo) == '0' ? 'selected' : ''}}>
+                                        <option value="" {{old('ativo', $socio->ativo) == '0' ? 'selected' : ''}}>
                                             Não
                                         </option>
 

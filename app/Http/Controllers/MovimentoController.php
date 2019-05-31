@@ -51,20 +51,17 @@ class MovimentoController extends Controller
      */
     public function store(StoreMovimento $request)
     {
-        if (Gate::allows('direcao', Auth::user())) {
-            $movimento = $request->validated();
-            Movimento::create($movimento);
+        $movimento = $request->validated();
+        Movimento::create($movimento);
 
-            return redirect()->action('UserController@index');
+        return redirect()->action('UserController@index');
 
-        } else {
-            $movimento = $request->validated();
-            $movimento['confirmado'] = 0;
-            Movimento::create($movimento);
 
-            return redirect()->action('UserController@index');
-        }
+        $movimento = $request->validated();
+        $movimento['confirmado'] = 0;
+        Movimento::create($movimento);
 
+        return redirect()->action('UserController@index');
 
     }
 
@@ -125,20 +122,10 @@ class MovimentoController extends Controller
      */
     public function destroy(Movimento $movimento)
     {
-        if (Movimento::where('movimento', $movimento->confirmado) == false) {
+        if (Movimento::where('movimento', $movimento->confirmado) == 0) {
             $movimento->forceDelete();
-        } else {
-            $movimento->delete();
         }
-
-        // Outra Versão
-
-        /*
-        $movimento=Movimento::findOrFail($id);
-        $movimento->delete();
-        */
-
-        return redirect()->back()->with('success', 'Movimento apagado com sucesso!');
+        return redirect()->back();
     }
 
     public static function filter(Request $request)

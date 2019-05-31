@@ -27,7 +27,7 @@ class StoreSocio extends FormRequest
         return [
             'name'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
             'email'=>'required|email|unique:users,email,',
-            'nome_informal'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
+            'nome_informal'=>'required|regex:[A-Za-zÀ-ú]',
             'sexo'=>'required',
             'data_nascimento'=>'required|date',
             'nif'=>"required|unique:users,nif|numeric|max:999999999",
@@ -47,7 +47,7 @@ class StoreSocio extends FormRequest
             'email.email'=>'O formato do email não é válido',
             'email.unique'=>'Este email já se encontra registado',
             'nome_informal.required'=>'O nome deve ser preenchido',
-            'nome_informal.regex'=>'O nome não deve conter números',
+            'nome_informal.regex'=>'O nome não deve conter acentos',
             'sexo.required'=>'O género tem que ser definido',
             'data_nascimento.required'=>'A data de nascimento deve ser preenchida',
             'data_nascimento.date'=>'O formato da data está inválido',

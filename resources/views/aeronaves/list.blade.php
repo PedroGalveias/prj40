@@ -7,24 +7,17 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">Aeronaves</div>
-
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
                         <table class="table table-striped">
                             <thead>
                             <tr>
 
-                                <th>matricula</th>
-                                <th>marca</th>
-                                <th>modelo</th>
-                                <th>num Lugares</th>
-                                <th>total horas</th>
-                                <th>preco_hora</th>
+                                <th>Matricula</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Número Lugares</th>
+                                <th>Total horas</th>
+                                <th>Preço hora</th>
 
                             </tr>
                             </thead>
@@ -41,19 +34,26 @@
                                     <td>{{ $aeronave->preco_hora }}</td>
 
                                     @can('direcao')
-                                    <td class="inline">
-                                        <a class="btn btn-sm btn-primary"
-                                           href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
-                                    </td>
-                                    <td class="inline">
-                                        <form action="{{action('AeronaveController@destroy',$aeronave)}}"
-                                              method="POST" role="form" class="inline">
-                                            {{ method_field('DELETE') }}
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
-                                    </td>
+                                        <div class="row">
+                                            <td class="inline">
+                                                <a class="btn btn-sm btn-warning"
+                                                   href="{{action('AeronaveController@listaPilotosAutorizados', ['matricula' => $aeronave->matricula])}}">lista
+                                                    autorizados</a>
+                                            </td>
+                                            <td class="inline">
+                                                <a class="btn btn-sm btn-primary"
+                                                   href="{{action('AeronaveController@edit', ['matricula' => $aeronave->matricula])}}">Editar</a>
+                                            </td>
 
+                                            <td class="inline">
+                                                <form action="{{action('AeronaveController@destroy',$aeronave)}}"
+                                                      method="POST" role="form" class="inline">
+                                                    {{ method_field('DELETE') }}
+                                                    {{ csrf_field() }}
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </div>
                                 </tr>
                             @endcan
                             @endforeach

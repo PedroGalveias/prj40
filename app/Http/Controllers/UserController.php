@@ -138,8 +138,11 @@ class UserController extends Controller
 
         if ($request->hasFile('foto_file')) {
             if ($request->file('foto_file')->isValid()) {
-                Storage::putFile('/storage/app/public/fotos/', $request->file('foto_file'));
+              //  Storage::putFile('/storage/app/public/fotos/', $request->file('foto_file'));
+                Storage::putFile('public/fotos/', $request->file('foto_file'));
+
                 $name = time() . '.' . $image->getClientOriginalExtension();
+                $socio->foto_url = $name;
             }
 
         }
@@ -151,7 +154,7 @@ class UserController extends Controller
         foreach ($keys as $key) {
             unset($socioEdit[$key]);
         }
-        $socio->foto_url = $name;
+
         $socio->fill($socioEdit);
         $socio->save();
         if (Auth::user()->tipo_socio == 'P') {
@@ -297,15 +300,7 @@ class UserController extends Controller
             ->paginate(24);
         return $users;
     }
-    public function listaPilotosAutorizados(Aeronave $aeronave)
-    {
-        $pilotosAutorizados = DB::table('aeronaves_pilotos')->pluck('piloto_id');
-        //where in aeronave = qualquer coisa
 
-        $listaPilotos= User::whereIn('id',$pilotosAutorizados)->get();
-        //para pilotos nao autorizados whereNotIN
-        return view('users.listaAutorizados', compact('title', 'listaPilotos'));
 
-    }
 
 }

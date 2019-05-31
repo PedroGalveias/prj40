@@ -5,21 +5,20 @@ namespace App\Http\Controllers;
 use App\Aeronave;
 use App\Movimento;
 use App\User;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests\UpdateAeronave;
 use App\Http\Requests\StoreAeronave;
 use Illuminate\Support\Facades\Gate;
+use DB;
 
 class AeronaveController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -39,7 +38,7 @@ class AeronaveController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -54,8 +53,8 @@ class AeronaveController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return Response
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function store(StoreAeronave $request)
     {
@@ -69,8 +68,8 @@ class AeronaveController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Aeronave $aeronave
-     * @return Response
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
      */
     public function show(Aeronave $aeronave)
     {
@@ -80,8 +79,8 @@ class AeronaveController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Aeronave $aeronave
-     * @return Response
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
      */
     public function edit(Aeronave $aeronave)
     {
@@ -96,9 +95,9 @@ class AeronaveController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param Aeronave $aeronave
-     * @return Response
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
      */
     public function update(UpdateAeronave $request, Aeronave $aeronave)
     {
@@ -119,9 +118,8 @@ class AeronaveController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Aeronave $aeronave
-     * @return Response
-     * @throws Exception
+     * @param  \App\Aeronave $aeronave
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Aeronave $aeronave)
     {
@@ -131,19 +129,36 @@ class AeronaveController extends Controller
             $aeronave->delete();
         }
 
-
         return redirect()->back()->with('success', 'User deleted successfully!');
     }
-
-    public function priceTime(Aeronave $aeronave)
+    public function listaPilotosAutorizados(Aeronave $aeronave)
     {
-        return view('aeronaves.priceTime', compact('aeronave'));
+        $title = "Pilotos autorizados a voar a aeronave $aeronave->matricula";
+        $pilotoAeronavesId = DB::table('aeronaves_pilotos')->where('matricula',$aeronave->matricula)->pluck('piloto_id'); //autorizados
+
+
+        $pilotos = User::where('tipo_socio','P');
+        $pilotosAuto = User::where('tipo_socio','P');
+
+        $pilotosNaoAuto = $pilotos->whereNotIn('id',$pilotoAeronavesId)->get(); //nao autorizados
+
+        $pilotosAuto = $pilotosAuto->whereIn('id',$pilotoAeronavesId)->get(); //autorizados
+
+        return view('socios.listaAutorizados', compact('title', 'pilotosAuto','pilotosNaoAuto','aeronave'));
+
+    }
+    public function removePiloto(User $piloto)
+    {
+        //  $pilotoRemovido = DB::table('aeronaves_pilotos')->where(['piloto_id','=',$piloto->id],['matricula','=',$aeronave->matricula])->get();
+        dd($piloto);
+
+      //  $pilotoRemovido->delete();
+
+        return redirect()->back();
+
     }
 
-    public function precoTempos()
-    {
-        //
-    }
+
 
 
 }

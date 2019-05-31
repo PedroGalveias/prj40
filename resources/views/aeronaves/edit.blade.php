@@ -9,7 +9,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <form method="POST" action="{{ action('AeronaveController@update',$aeronave)}}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ action('AeronaveController@update',$aeronave)}}"
+                          enctype="multipart/form-data">
                         {{ method_field('PUT') }}
                         {{csrf_field()}}
 
@@ -24,7 +25,8 @@
                             <label for="matricula" class="col-sm-4 col-form-label"> Matricula </label>
                             <div class="col-sm-10">
                                 <input type="text" name="matricula" class="form-control" id="matricula"
-                                       placeholder="Matricula" disabled value="{{old('matricula', $aeronave->matricula)}}"/>
+                                       placeholder="Matricula" disabled
+                                       value="{{old('matricula', $aeronave->matricula)}}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -92,7 +94,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <div class="col-sm-offset-5 col-sm-6">
                                 <input type="submit" class="btn btn-success" name="ok" value="guardar">

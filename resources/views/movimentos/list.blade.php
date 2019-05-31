@@ -112,19 +112,19 @@
                                     (Auth::user()->direcao ==1 && $movimento->confirmado ==0 ) )
 
 
-                                            <td>
+                                        <td>
 
-                                                <a class="btn btn-sm btn-primary"
-                                                   href="{{action('MovimentoController@edit',['id'=>$movimento->id])}}">Editar</a>
+                                            <a class="btn btn-sm btn-primary"
+                                               href="{{action('MovimentoController@edit',['id'=>$movimento->id])}}">Editar</a>
 
-                                                <form action="{{action('MovimentoController@destroy', ['id'=>$movimento->id])}}"
-                                                      method="POST" role="form" class="inline">
-                                                    {{ method_field('DELETE') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                </form>
+                                            <form action="{{action('MovimentoController@destroy', ['id'=>$movimento->id])}}"
+                                                  method="POST" role="form" class="inline">
+                                                {{ method_field('DELETE') }}
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
 
-                                            </td>
+                                        </td>
 
                                     @endif
                                     <td></td>

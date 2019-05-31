@@ -6,6 +6,7 @@
         @include('partials.errors')
     @endif
 
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -24,73 +25,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="num_licenca_piloto" class="col-sm-4 col-form-label"> Nº licença Piloto</label>
+                            <label for="piloto_id" class="col-sm-4 col-form-label"> Id Piloto </label>
                             <div class="col-sm-10">
-                                <input type="text" name="num_licenca_piloto" class="form-control"
-                                       id="num_licenca_piloto" placeholder="num_licenca_piloto"/>
+                                <input type="text" name="piloto_id" class="form-control" id="piloto_id"
+                                       value="{{Auth::user()->id}}"/>
+
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="validade_licenca_piloto" class="col-sm-4 col-form-label"> Validade licença
-                                Piloto</label>
-                            <div class="col-sm-10">
-                                <input type="date" name="validade_licenca_piloto" class="form-control"
-                                       id="validade_licenca_piloto" placeholder="validade_licenca_piloto"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tipo_licenca_piloto" class="col-sm-4 col-form-label"> Tipo Licença
-                                Piloto</label>
-                            <div class="col-sm-10">
-                                <p>
-                                    <select name="tipo_licenca_piloto">
-                                        <option disabled selected="">Selecione...</option>
-                                        <option value="ALUNO-PPL(A)">Aluno - Private Pilot License Airplane</option>
-                                        <option value="ALUNO-PU">Aluno - Piloto de Ultraleve</option>
-                                        <option value="ATPL">Airline Transport Pilot License</option>
-                                        <option value="CPL(A)">Comercial Pilot License Airplane</option>
-                                        <option value="PPL(A)">Private Pilot License Airplane</option>
-                                        <option value="PU">Piloto de Ultraleve</option>
-                                    </select>
-                                </p>
-                            </div>
-                        </div>
-
-                                                <div class="form-group">
-                            <label for="num_certificado_piloto" class="col-sm-4 col-form-label"> Nº de Certificado do
-                                Piloto</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="num_certificado_piloto" class="form-control"
-                                       id="num_certificado_piloto" placeholder="num_certificado_piloto"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="validade_certificado_piloto" class="col-sm-4 col-form-label"> Validade do
-                                Certificado do Piloto</label>
-                            <div class="col-sm-10">
-                                <input type="date" name="validade_certificado_piloto" class="form-control"
-                                       id="validade_certificado_piloto" placeholder="validade_certificado_piloto"/>
-                            </div>
-                        </div>
-
- <div class="form-group">
-                            <label for="classe_certificado_piloto" class="col-sm-4 col-form-label"> Classe do
-                                Certificado do Piloto</label>
-                            <div class="col-sm-10">
-                                <p>
-                                    <select name="classe_certificado_piloto">
-                                        <option disabled selected="">Selecione...</option>
-                                        <option value="Class 1">Class 1 medical certificate</option>
-                                        <option value="Class 2">Class 2 medical certificate</option>
-                                        <option value="LAPL"> Light Aircraft Pilot Licence Medical
-                                        </option>
-                                    </select>
-                                </p>
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label for="data" class="col-sm-4 col-form-label"> Data </label>
@@ -103,7 +45,8 @@
                         <div class="form-group">
                             <label for="hora_descolagem" class="col-sm-4 col-form-label"> Hora Descolagem </label>
                             <div class="col-sm-10">
-                                <input type="datetime-local" name="hora_descolagem" class="form-control" id="hora_descolagem"
+                                <input type="datetime-local" name="hora_descolagem" class="form-control"
+                                       id="hora_descolagem"
                                        placeholder="hora_descolagem"/>
 
                             </div>
@@ -112,7 +55,8 @@
                         <div class="form-group">
                             <label for="hora_aterragem" class="col-sm-4 col-form-label"> Hora Aterragem </label>
                             <div class="col-sm-10">
-                                <input type="datetime-local" name="hora_aterragem" class="form-control" id="hora_aterragem"
+                                <input type="datetime-local" name="hora_aterragem" class="form-control"
+                                       id="hora_aterragem"
                                        placeholder="hora_aterragem"/>
 
                             </div>
@@ -123,29 +67,6 @@
                             <div class="col-sm-10">
                                 <input type="number" name="tempo_voo" class="form-control" id="tempo_voo"
                                        placeholder="tempo_voo"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="natureza" class="col-sm-4 col-form-label"> Natureza </label>
-                            <div class="col-sm-10">
-                                <p>
-                                    <select name="natureza">
-                                        <option disabled selected="">Selecione...</option>
-                                        <option value="T">T</option>
-                                        <option value="I">I</option>
-                                        <option value="E">E</option>
-                                    </select>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="piloto_id" class="col-sm-4 col-form-label"> Id Piloto </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="piloto_id" class="form-control" id="piloto_id"
-                                       placeholder="piloto_id"/>
-
                             </div>
                         </div>
 
@@ -334,27 +255,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="tipo_instrucao" class="col-sm-4 col-form-label"> Tipo Instrução </label>
-                            <div class="col-sm-10">
-                                <p>
-                                    <select name="tipo_instrucao">
-                                        <option disabled selected="">Selecione...</option>
-                                        <option value="D">D</option>
-                                        <option value="S">S</option>
-                                    </select>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="instrutor_id" class="col-sm-4 col-form-label"> Id Instrutor </label>
-                            <div class="col-sm-10">
-                                <input type="text" name="instrutor_id" class="form-control" id="instrutor_id"
-                                       placeholder="instrutor_id"/>
-
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label for="modo_pagamento" class="col-sm-4 col-form-label"> Modo de Pagamento </label>
@@ -388,21 +288,7 @@
 
                             </div>
                         </div>
-                        @can('direcao'  )
-                            <div class="form-group">
-                                <label for="confirmado" class="col-sm-4 col-form-label"> confirmado </label>
-                                <div class="col-sm-10">
-                                    <p>
-                                        <select name="confirmado">
 
-                                            <option value="0">Sim</option>
-                                            <option value="1">Não</option>
-
-                                        </select>
-                                    </p>
-                                </div>
-                            </div>
-                        @endcan
                         <div class="form-group">
                             <label for="observacoes" class="col-sm-4 col-form-label"> Observações </label>
                             <div class="col-sm-10">
@@ -410,11 +296,251 @@
                                        placeholder="observacoes"/>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label id="natureza" for="natureza" class="col-sm-4 col-form-label"> Natureza </label>
+                            <div class="col-sm-10">
+                                <p>
+                                    <select name="natureza" id="natureza">
+                                        <option disabled selected="">Selecione...</option>
+                                        <option value="T">T</option>
+                                        <option value="I">I</option>
+                                        <option value="E">E</option>
+                                    </select>
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <!-- SÓ APARECE O HTML DEBAIXO SE A NATUREZA DESTE MOVIMENTO FOR DE INSTRUÇÃO (I) -->
+
+                        <div id="mostrarIntrutor">
+                            <div class="form-group">
+
+                                <label id="l-tipo_instrucao" for="tipo_instrucao" class="col-sm-4 col-form-label">
+                                    Tipo
+                                    Instrução </label>
+                                <div class="col-sm-10">
+                                    <p>
+                                        <select id="tipo_instrucao" name="tipo_instrucao"
+                                                class="form-control">
+                                            <option disabled selected="">Selecione...</option>
+                                            <option value="D">D</option>
+                                            <option value="S">S</option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="num_licenca_piloto" class="col-sm-4 col-form-label"> Nº licença
+                                    Piloto</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="num_licenca_piloto" class="form-control"
+                                           id="num_licenca_piloto" placeholder="num_licenca_piloto"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tipo_licenca_piloto" class="col-sm-4 col-form-label"> Tipo Licença
+                                    Piloto</label>
+                                <div class="col-sm-10">
+                                    <p>
+                                        <select name="tipo_licenca_piloto">
+                                            <option disabled selected="">Selecione...</option>
+                                            <option value="ALUNO-PPL(A)">Aluno - Private Pilot License Airplane
+                                            </option>
+                                            <option value="ALUNO-PU">Aluno - Piloto de Ultraleve</option>
+                                            <option value="ATPL">Airline Transport Pilot License</option>
+                                            <option value="CPL(A)">Comercial Pilot License Airplane</option>
+                                            <option value="PPL(A)">Private Pilot License Airplane</option>
+                                            <option value="PU">Piloto de Ultraleve</option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validade_licenca_piloto" class="col-sm-4 col-form-label"> Validade
+                                    licença
+                                    Piloto</label>
+                                <div class="col-sm-10">
+                                    <input type="date" name="validade_licenca_piloto" class="form-control"
+                                           id="validade_licenca_piloto" placeholder="validade_licenca_piloto"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="num_certificado_piloto" class="col-sm-4 col-form-label"> Número
+                                    Certificado
+                                    Médico Piloto </label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="num_certificado_piloto" class="form-control"
+                                           id="num_certificado_piloto"
+                                           placeholder="Nº Certificado Médico Piloto"/>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="classe_certificado_piloto" class="col-sm-4 col-form-label"> Classe do
+                                    Certificado do Piloto</label>
+                                <div class="col-sm-10">
+                                    <p>
+                                        <select name="classe_certificado_piloto">
+                                            <option disabled selected="">Selecione...</option>
+                                            <option value="Class 1">Class 1 medical certificate</option>
+                                            <option value="Class 2">Class 2 medical certificate</option>
+                                            <option value="LAPL"> Light Aircraft Pilot Licence Medical
+                                            </option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validade_certificado_piloto" class="col-sm-4 col-form-label">Validade
+                                    Certificado Médico Piloto</label>
+                                <div class="col-sm-10">
+                                    <input type="date" name="validade_certificado_piloto" class="form-control"
+                                           id="validade_certificado_piloto"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="num_licenca_instrutor" class="col-sm-4 col-form-label">Número Licença
+                                    Instrutor</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="num_licenca_instrutor" class="form-control"
+                                           id="num_licenca_instrutor" placeholder="Nº liceça Instrutor"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tipo_licenca_instrutor" class="col-sm-4 col-form-label"> Tipo Licença
+                                    Instrutor</label>
+                                <div class="col-sm-10">
+                                    <p>
+                                        <select name="tipo_licenca_instrutor">
+                                            <option disabled selected="">Selecione...</option>
+                                            <option value="ALUNO-PPL(A)">Aluno - Private Pilot License Airplane
+                                            </option>
+                                            <option value="ALUNO-PU">Aluno - Piloto de Ultraleve</option>
+                                            <option value="ATPL">Airline Transport Pilot License</option>
+                                            <option value="CPL(A)">Comercial Pilot License Airplane</option>
+                                            <option value="PPL(A)">Private Pilot License Airplane</option>
+                                            <option value="PU">Piloto de Ultraleve</option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="validade_licenca_instrutor" class="col-sm-4 col-form-label">Validade
+                                    Licença
+                                    Instrutor</label>
+                                <div class="col-sm-10">
+                                    <input type="date" name="validade_licenca_instrutor" class="form-control"
+                                           id="validade_licenca_instrutor"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="num_certificado_instrutor" class="col-sm-4 col-form-label"> Número
+                                    Certificado
+                                    Médico Instrutor </label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="num_certificado_instrutor" class="form-control"
+                                           id="num_certificado_instrutor"
+                                           placeholder="Nº Certificado Médico Instrutor"/>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validade_licenca_instrutor" class="col-sm-4 col-form-label">Validade
+                                    Licença
+                                    Instrutor</label>
+                                <div class="col-sm-10">
+                                    <input type="date" name="validade_licenca_instrutor" class="form-control"
+                                           id="validade_licenca_instrutor" placeholder="Validade"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="instrutor_id" class="col-sm-4 col-form-label"> Id Instrutor </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="instrutor_id" class="form-control" id="instrutor_id"
+                                           placeholder="instrutor_id"/>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="classe_certificado_instrutor" class="col-sm-4 col-form-label"> Classe do
+                                    Certificado Médico do Instrutor</label>
+                                <div class="col-sm-10">
+                                    <p>
+                                        <select name="classe_certificado_instrutor">
+                                            <option disabled selected="">Selecione...</option>
+                                            <option value="Class 1">Class 1 medical certificate</option>
+                                            <option value="Class 2">Class 2 medical certificate</option>
+                                            <option value="LAPL"> Light Aircraft Pilot Licence Medical
+                                            </option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validade_certificado_instrutor" class="col-sm-4 col-form-label">Validade
+                                    Certificado
+                                    Médico Instrutor</label>
+                                <div class="col-sm-10">
+                                    <input type="date" name="validade_certificado_instrutor" class="form-control"
+                                           id="validade_certificado_instrutor"/>
+                                </div>
+                            </div>
+                            @if(Auth::user()->direcao == '1')
+                                <div class="form-group">
+                                    <label for="confirmado" class="col-sm-4 col-form-label"> confirmado </label>
+                                    <div class="col-sm-10">
+
+                                        <p>
+                                            <select name="confirmado">
+                                                <option value="0">Não</option>
+                                                <option value="1">Sim</option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="form-group">
+                                    <label for="confirmado" class="col-sm-4 col-form-label"> confirmado </label>
+                                    <div class="col-sm-10">
+                                        <input type="hidden" name="confirmado" value="0">
+                                        <p>
+                                            <select name="confirmado" disabled>
+                                                <option value="">Não</option>
+                                                <option value="">Sim</option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" name="ok" value="Guardar">
                             <a class="btn btn-primary" href="{{action('MovimentoController@index')}}">Voltar</a>
 
                         </div>
+
 
                     </form>
 
@@ -422,4 +548,5 @@
             </div>
         </div>
     </div>
+
 @endsection
