@@ -1,11 +1,9 @@
 @extends('layouts.app')
-
 @section('content')
 
     @if($errors->any())
         @include('partials.errors')
     @endif
-
 
     <div class="container">
         <div class="row justify-content-center">
@@ -66,6 +64,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="sexo" class="col-sm-4 col-form-label"> Genero </label>
                                 <div class="col-sm-10">

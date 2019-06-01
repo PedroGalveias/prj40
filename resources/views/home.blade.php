@@ -50,6 +50,15 @@
                                                     movimento</strong></a>
                                         </li>
                                     @endcan
+
+                                    @can('direcao')
+                                        <li>
+                                            <a class="nav-link"
+                                               href="{{action('PendentesController@index')}}"><strong>Lista de
+                                                    pendentes</strong></a>
+                                        </li>
+                                    @endcan
+
                                 </ul>
 
                             </div>

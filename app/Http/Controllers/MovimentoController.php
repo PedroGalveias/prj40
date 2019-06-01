@@ -51,17 +51,12 @@ class MovimentoController extends Controller
      */
     public function store(StoreMovimento $request)
     {
-        $movimento = $request->validated();
-        Movimento::create($movimento);
-
-        return redirect()->action('UserController@index');
-
 
         $movimento = $request->validated();
-        $movimento['confirmado'] = 0;
         Movimento::create($movimento);
+        @dump($movimento);
+        return redirect()->action('MovimentoController@index@index');
 
-        return redirect()->action('UserController@index');
 
     }
 
@@ -112,6 +107,8 @@ class MovimentoController extends Controller
         }
         $movimento->fill($movimentoEdit);
         $movimento->save();
+
+
     }
 
     /**

@@ -69,7 +69,7 @@ class UserController extends Controller
      */
     public function store(StoreSocio $request)
     {
-        dd($request);
+
         $image = $request->file('foto_url');
 
         if ($request->hasFile('foto_url')) {

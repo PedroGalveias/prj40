@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-
 
     @if($errors->any())
         @include('partials.errors')

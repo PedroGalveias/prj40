@@ -1,11 +1,9 @@
 @extends('layouts.app')
-
 @section('content')
 
     @if($errors->any())
         @include('partials.errors')
     @endif
-
 
     <div class="container">
         <div class="row justify-content-center">
@@ -28,7 +26,7 @@
                             <label for="piloto_id" class="col-sm-4 col-form-label"> Id Piloto </label>
                             <div class="col-sm-10">
                                 <input type="text" name="piloto_id" class="form-control" id="piloto_id"
-                                       value="{{Auth::user()->id}}"/>
+                                       value="{{Auth::user()->id}}" readonly/>
 
                             </div>
                         </div>
@@ -297,6 +295,7 @@
                             </div>
                         </div>
 
+
                         <div class="form-group">
                             <label id="natureza" for="natureza" class="col-sm-4 col-form-label"> Natureza </label>
                             <div class="col-sm-10">
@@ -346,16 +345,7 @@
                                     Piloto</label>
                                 <div class="col-sm-10">
                                     <p>
-                                        <select name="tipo_licenca_piloto">
-                                            <option disabled selected="">Selecione...</option>
-                                            <option value="ALUNO-PPL(A)">Aluno - Private Pilot License Airplane
-                                            </option>
-                                            <option value="ALUNO-PU">Aluno - Piloto de Ultraleve</option>
-                                            <option value="ATPL">Airline Transport Pilot License</option>
-                                            <option value="CPL(A)">Comercial Pilot License Airplane</option>
-                                            <option value="PPL(A)">Private Pilot License Airplane</option>
-                                            <option value="PU">Piloto de Ultraleve</option>
-                                        </select>
+                                        <input type="text" value="PU" class="form-control" name="tipo_licenca_piloto">
                                     </p>
                                 </div>
                             </div>
@@ -376,7 +366,7 @@
                                     Certificado
                                     Médico Piloto </label>
                                 <div class="col-sm-10">
-                                    <input type="number" name="num_certificado_piloto" class="form-control"
+                                    <input type="text" name="num_certificado_piloto" class="form-control"
                                            id="num_certificado_piloto"
                                            placeholder="Nº Certificado Médico Piloto"/>
 
@@ -453,7 +443,7 @@
                                     Certificado
                                     Médico Instrutor </label>
                                 <div class="col-sm-10">
-                                    <input type="number" name="num_certificado_instrutor" class="form-control"
+                                    <input type="text" name="num_certificado_instrutor" class="form-control"
                                            id="num_certificado_instrutor"
                                            placeholder="Nº Certificado Médico Instrutor"/>
 
