@@ -117,7 +117,7 @@ class UserController extends Controller
      */
     public function edit(User $socio)
     {
-        if (Gate::allows('direcao', Auth::user()) ||  Auth::id() == $socio->id) {
+        if (Gate::allows('direcao', Auth::user()) || Auth::id() == $socio->id) {
             $title = "Editar Sócio";
             return view('socios.edit', compact('title', 'socio'));
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovimento;
+use App\Http\Requests\UpdateMovimento;
 use App\Movimento;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class MovimentoController extends Controller
         } else {
             return Response(view('errors.403'), 403);
         }
+
         return view('movimentos.list', compact('movimentos'))->with('movimentos', $movimentos);
     }
 
@@ -33,13 +35,10 @@ class MovimentoController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->tipo_socio == 'P' || Auth::user()->direcao == 1) {
-            $title = 'Inserir novo movimento';
-
+        if (Gate::allows('piloto', Auth::user()) || Gate::allows('direcao', Auth::user())) {
             $aerodromos = DB::table('aerodromos')->get();
-
             $movimento = new Movimento();
-            return view('movimentos.add', compact('movimento', 'aerodromos'));
+            return view('movimentos.add', compact('movimento','aerodromos'));
         } else {
             return Response(view('errors.403'), 403);
         }
@@ -94,10 +93,8 @@ class MovimentoController extends Controller
             (DB::table('movimentos')->where('id', $movimento->id)->where('instrutor_id', Auth::id()) && $movimento->confirmado == 0) ||
             (Gate::allows('direcao', Auth::user()) && $movimento->confirmado == 0)
         ) {
-
-                $aerodromos = DB::table('aerodromos')->get();
-
-            return view('movimentos.edit', compact('title', 'movimento', 'aerodromos'));
+            $aerodromos = DB::table('aerodromos')->get();
+            return view('movimentos.edit', compact('title', 'movimento','aerodromos'));
         } else {
             return Response(view('errors.403'), 403);
         }

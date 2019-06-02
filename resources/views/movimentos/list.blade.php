@@ -128,6 +128,7 @@
                                     @endif
 
                                     @can('direcao')
+                                        @if($movimento->confirmado==0)
                                         <td>
 
                                             <a class="btn btn-sm btn-primary"
@@ -141,6 +142,7 @@
                                             </form>
 
                                         </td>
+                                            @endif
                                     @endcan
                                     <td></td>
                                     <td>{{$movimento->aeronave}}</td>

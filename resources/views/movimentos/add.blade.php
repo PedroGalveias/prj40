@@ -7,7 +7,7 @@
     @endif
 
 
-<div class="container">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -206,12 +206,11 @@
                             <label id="natureza" for="natureza" class="col-sm-4 col-form-label"> Natureza </label>
                             <div class="col-sm-10">
                                 <p>
-                                    <select name="natureza" id="natureza" @error('natureza') is-invalid
-                                            @enderror onchange="mostrar(value)">
+                                    <select name="natureza" id="natureza">
                                         <option value="-1" disabled selected="">Selecione...</option>
-                                        <option value="T" onclick="mostrar(1);">T</option>
-                                        <option value="I" onclick="mostrar(2);">I</option>
-                                        <option value="E" onclick="mostrar(3);">E</option>
+                                        <option value="T">T</option>
+                                        <option value="I">I</option>
+                                        <option value="E">E</option>
                                     </select>
                                 </p>
                             </div>

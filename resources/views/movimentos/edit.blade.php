@@ -221,6 +221,7 @@
                                 <p>
                                     <select name="natureza">
                                         <option disabled selected="">Selecione...</option>
+
                                         <option value="T" {{old('natureza', $movimento->natureza) == 'T' ? 'selected' : ''}}>
                                             T
                                         </option>
@@ -455,9 +456,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="validade_certificado_instrutor" class="col-sm-4 col-form-label">Validade
-                                Certificado
-                                Médico Instrutor</label>
+                            <label for="validade_certificado_instrutor" class="col-sm-4 col-form-label">Validade Certificado Médico Instrutor</label>
                             <div class="col-sm-10">
                                 <input type="date" name="validade_certificado_instrutor" class="form-control"
                                        id="validade_certificado_instrutor"

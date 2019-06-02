@@ -27,10 +27,8 @@
                                     @else
                                         <td><img class="rounded-circle"
                                                  src=" {{asset("/storage/fotos/$socio->foto_url")}}" width="100"/></td>
-                                @endif
+                                    @endif
 
-
-                                <!-- badge -->
                                     <div class="row justify-content-center">
                                         <span class="label label-default rank-label">{{$socio->name}}</span>
                                     </div>
@@ -82,7 +80,7 @@
                             <div class="form-group">
                                 <label for="quota_paga" class="col-sm-4 col-form-label">Quota </label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="quota_paga" disabled>
+                                    <select class="form-control" name="quota_paga">
                                         <option value="1" {{old('quota_paga', $socio->quota_paga) == '1' ? 'selected' : ''}}>
                                             Sim
                                         </option>
@@ -111,8 +109,8 @@
                             <div class="form-group">
                                 <label for="ativo" class="col-sm-4 col-form-label">Ativo</label>
                                 <div class="col-sm-10">
-                                    <input type="hidden" name="ativo" value="{{$socio->ativo}}">
-                                    <select class="form-control" name="ativo" disabled>
+
+                                    <select class="form-control" name="ativo">
                                         <option value="1" {{old('ativo', $socio->ativo) == '1' ? 'selected' : ''}}>
                                             Sim
                                         </option>
@@ -123,16 +121,14 @@
                                     </select>
                                 </div>
                             </div>
-
-
                         @else
                             <div class="form-group">
 
                                 <label for="name" class="col-sm-4 col-form-label"> Número Sócio: </label>
                                 <div class="col-sm-10">
                                     <input type="text" name="num_socio" class="form-control" id="num_socio"
-                                           placeholder="numero socio"
-                                           disabled value="{{old('num_socio', $socio->num_socio)}} "/>
+                                           placeholder="numero socio" readonly
+                                           value="{{old('num_socio', $socio->num_socio)}} "/>
                                 </div>
                             </div>
 
@@ -173,8 +169,9 @@
                             <div class="form-group">
                                 <label for="quota_paga" class="col-sm-4 col-form-label">Quota </label>
                                 <div class="col-sm-10">
-                                    <input type="hidden" name="quota_paga" value="{{$socio->quota_paga}}">
+
                                     <select class="form-control" name="quota_paga" disabled>
+                                        <input type="hidden" name="quota_paga" value="{{$socio->quota_paga}}">
                                         <option value="" {{old('quota_paga', $socio->quota_paga) == '1' ? 'selected' : ''}}>
                                             Sim
                                         </option>
@@ -221,7 +218,6 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-3 col-form-label"> Nome Completo </label>
                             <div class="col-sm-10">
-
                                 <input type="text" name="name" class="form-control" id="name" placeholder="Name"
                                        value="{{old('name', $socio->name)}}"/>
                             </div>
@@ -279,7 +275,7 @@
 
 
                         @if($socio->tipo_socio == 'P')
-
+                            @if($socio->direcao == 0)
                             <div class="form-group">
                                 <label for="licenca_confirmada" class="col-sm-4 col-form-label">Licença
                                     confirmada</label>
@@ -312,6 +308,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             <div class="form-group">
                                 <label for="tipo_licenca" class="col-sm-4 col-form-label">Tipo licença</label>
                                 <div class="col-sm-10">
@@ -401,7 +398,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="validade_certificado" class="col-sm-4 col-form-label"> validade
+                                <label for="validade_certificado" class="col-sm-4 col-form-label"> Validade
                                     certificado</label>
                                 <div class="col-sm-10">
                                     <input type="date" name="validade_certificado" class="form-control"
@@ -423,6 +420,7 @@
                                        accept=".pdf">
                             </div>
                             @can('direcao')
+
                                 <div class="form-group">
                                     <label for="licenca_confirmada" class="col-sm-4 col-form-label">licenca
                                         confirmada</label>
@@ -455,19 +453,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="d-md-table-row">
-                                    <td><a href="{{route('licenca',['piloto' => $socio])}}">licenca.pdf</a>&nbsp
-                                        <a href="{{route('certificado',['piloto' => $socio])}}">certificado.pdf</a></td>
-                                </div>
-                                <div class="form-group">
-                                    <label for="licenca" class="col-sm-4 col-form-label">Upload certificado</label>
-                                    <input type="file" name="licenca" id="licenca" class="form-control" accept=".pdf">
-                                </div>
-                                <div class="form-group">
-                                    <label for="certificado" class="col-sm-4 col-form-label">Upload licença</label>
-                                    <input type="file" name="certificado" id="certificado" class="form-control"
-                                           accept=".pdf">
-                                </div>
+
                             @endcan
                         @endif
                         <div class="form-group">
