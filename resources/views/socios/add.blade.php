@@ -1,5 +1,7 @@
 @extends('layouts.app')
+
 @section('content')
+
 
     @if($errors->any())
         @include('partials.errors')
@@ -113,8 +115,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="foto" class="col-sm-4 col-form-label">Upload Foto Perfil</label>
-                            <input type="file" name="foto" id="foto" class="form-control" accept=".jpg,.jpeg,.png">
+                            <label for="foto_url" class="col-sm-4 col-form-label">Upload Foto Perfil</label>
+                            <input type="file" name="foto_url" id="foto_url" class="form-control" accept=".jpg,.jpeg,.png">
                         </div>
                         <div class="form-group">
                             <label for="data_nascimento" class="col-sm-4 col-form-label"> Data nascimento </label>

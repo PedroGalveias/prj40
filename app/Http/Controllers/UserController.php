@@ -7,9 +7,11 @@ use App\Aeronave;
 use App\Http\Requests\StoreSocio;
 use App\Movimento;
 
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use App\User;
 
+use SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,8 +31,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-
-        if (Auth::user()->direcao) {
+        $title = 'Sócios';
+        if (Gate::allows('direcao', Auth::user())) {
             $matchThese = [['id', '<>', '-1'], ['num_socio', '<>', '-1']];
 
             $socios = UserController::filter($request, $matchThese);
@@ -39,7 +41,7 @@ class UserController extends Controller
 
             $socios = UserController::filter($request, $matchThese);
         }
-        $title = 'Sócios';
+
         return view('socios.list', compact('title', 'socios'));
     }
 
@@ -69,24 +71,27 @@ class UserController extends Controller
      */
     public function store(StoreSocio $request)
     {
+        $socio = $request->validated();
+        $image = $request->file('foto_file');
 
-        $image = $request->file('foto_url');
+        if ($request->hasFile('foto_file')) {
+            if ($request->file('foto_file')->isValid()) {
 
-        if ($request->hasFile('foto_url')) {
-            if ($request->file('foto_url')->isValid()) {
-                Storage::putFile('/storage/app/public/fotos/', $request->file('foto_url'));
-                $name = time() . '.' . $image->getClientOriginalExtension();
+                $image = $image->hashName();
+                $request->file('foto_file')->storeAs('/public/fotos', $image);
+
             }
 
         }
-
-        $socio = $request->validated();
-        //$socio->image = $name;
+        if ($image != null) {
+            $socio->foto_url = $image;
+        }
         $num_socio = User::max('num_socio');
         $socio['num_socio'] = ++$num_socio;
         $socio['password'] = Hash::make($socio['data_nascimento']);
 
         $user = User::create($socio);
+
         $user->sendEmailVerificationNotification();
 
 
@@ -112,7 +117,7 @@ class UserController extends Controller
      */
     public function edit(User $socio)
     {
-        if (Auth::user()->direcao == 1 || Auth::user()->id == $socio->id) {
+        if (Gate::allows('direcao', Auth::user()) ||  Auth::id() == $socio->id) {
             $title = "Editar Sócio";
             return view('socios.edit', compact('title', 'socio'));
 
@@ -133,22 +138,18 @@ class UserController extends Controller
      */
     public function update(UpdateSocio $request, User $socio)
     {
-
+        $socioEdit = $request->validated();
         $image = $request->file('foto_file');
 
         if ($request->hasFile('foto_file')) {
             if ($request->file('foto_file')->isValid()) {
-              //  Storage::putFile('/storage/app/public/fotos/', $request->file('foto_file'));
-                Storage::putFile('public/fotos/', $request->file('foto_file'));
 
-                $name = time() . '.' . $image->getClientOriginalExtension();
-                $socio->foto_url = $name;
+                $image = $image->hashName();
+                $request->file('foto_file')->storeAs('/public/fotos', $image);
+
             }
 
         }
-
-        $socioEdit = $request->validated();
-
         $keys = array_keys($socioEdit, null, true);
 
         foreach ($keys as $key) {
@@ -156,12 +157,15 @@ class UserController extends Controller
         }
 
         $socio->fill($socioEdit);
-        $socio->save();
-        if (Auth::user()->tipo_socio == 'P') {
+        if ($image != null) {
+            $socio->foto_url = $image;
+        }
+
+        if (Gate::denies('direcao', Auth::user())) {
             User::where('licenca_confirmada', '1')->update(['licenca_confirmada' => '0']);
             User::where('certificado_confirmado', '1')->update(['certificado_confirmado' => '0']);
         }
-
+        $socio->save();
         return redirect()->action('UserController@index');
     }
 
@@ -243,7 +247,6 @@ class UserController extends Controller
     public function certificado(User $piloto)
     {
 
-
         return response()->file(storage_path("app/docs_piloto/certificado_{$piloto->id}.pdf"));
 
     }
@@ -253,6 +256,20 @@ class UserController extends Controller
 
 
         return response()->file(storage_path("app/docs_piloto/licenca_{$piloto->id}.pdf"));
+
+    }
+
+    public function pendentes()
+    {
+        $movimentos = DB::table('movimentos')->where('confirmado', 0)->paginate(25); //movimentos nao confirmados
+
+
+        $pilotos = User::where('tipo_socio', 'P');
+
+        $pilotos = $pilotos->where('certificado_confirmado', 0)->orWhere('licenca_confirmada', 0)->paginate(25); //nao autorizados
+
+
+        return view('socios.pendentes', compact('pilotos', 'movimentos'));
 
     }
 
@@ -300,7 +317,6 @@ class UserController extends Controller
             ->paginate(24);
         return $users;
     }
-
 
 
 }

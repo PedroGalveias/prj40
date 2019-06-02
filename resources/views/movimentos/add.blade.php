@@ -1,11 +1,13 @@
 @extends('layouts.app')
+
 @section('content')
 
     @if($errors->any())
         @include('partials.errors')
     @endif
 
-    <div class="container">
+
+<div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -18,7 +20,7 @@
                             <label for="aeronave" class="col-sm-4 col-form-label"> Matricula aeronave </label>
                             <div class="col-sm-10">
                                 <input type="text" name="aeronave" class="form-control" id="aeronave"
-                                       placeholder="aeronave" value="{{old('aeronave',$movimento->aeronave)}}"/>
+                                       placeholder="Matrícula"/>
                             </div>
                         </div>
 
@@ -35,7 +37,7 @@
                         <div class="form-group">
                             <label for="data" class="col-sm-4 col-form-label"> Data </label>
                             <div class="col-sm-10">
-                                <input type="date" name="data" class="form-control" id="data" placeholder="data"/>
+                                <input type="date" name="data" class="form-control" id="data"/>
 
                             </div>
                         </div>
@@ -44,8 +46,7 @@
                             <label for="hora_descolagem" class="col-sm-4 col-form-label"> Hora Descolagem </label>
                             <div class="col-sm-10">
                                 <input type="datetime-local" name="hora_descolagem" class="form-control"
-                                       id="hora_descolagem"
-                                       placeholder="hora_descolagem"/>
+                                       id="hora_descolagem"/>
 
                             </div>
                         </div>
@@ -54,8 +55,7 @@
                             <label for="hora_aterragem" class="col-sm-4 col-form-label"> Hora Aterragem </label>
                             <div class="col-sm-10">
                                 <input type="datetime-local" name="hora_aterragem" class="form-control"
-                                       id="hora_aterragem"
-                                       placeholder="hora_aterragem"/>
+                                       id="hora_aterragem"/>
 
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                             <label for="tempo_voo" class="col-sm-4 col-form-label"> Tempo Voo </label>
                             <div class="col-sm-10">
                                 <input type="number" name="tempo_voo" class="form-control" id="tempo_voo"
-                                       placeholder="tempo_voo"/>
+                                       placeholder="Tempo"/>
                             </div>
                         </div>
 
@@ -72,124 +72,30 @@
                             <label for="aerodromo_partida" class="col-sm-4 col-form-label"> Aerodromo Partida </label>
                             <div class="col-sm-10">
                                 <p>
-                                    <select name="aerodromo_partida">
-                                        <option disabled selected="">Selecione...</option>
-                                        <option value="LPAR">Base Aérea Alverca</option>
-                                        <option value="LPAV">Base Aérea de São Jacinto - Aveiro</option>
-                                        <option value="LPBG"> Bragança</option>
-                                        <option value="LPBJ">Beja</option>
-                                        <option value="LPBR">Braga</option>
-                                        <option value="LPCB">Castelo Branco</option>
-                                        <option value="LPCH">Chaves</option>
-                                        <option value="LPCO">Coimbra - Bissaya Barreto</option>
-                                        <option value="LPCS">Cascais</option>
-                                        <option value="LPEV">Évora</option>
-                                        <option value="LPFA">Ferreira do Alentejo</option>
-                                        <option value="LPFC">Figueira de Cavaleiros</option>
-                                        <option value="LPFR">Faro</option>
-                                        <option value="LPIN">Espinho</option>
-                                        <option value="LPJF">Leiria - José Ferrinho</option>
-                                        <option value="LPLZ">Lousã</option>
-                                        <option value="LPMI">Mirandela</option>
-                                        <option value="LPMN">Amendoeira - Montemor-o-Novo</option>
-                                        <option value="LPMR"> Base Aérea Monte Real</option>
-                                        <option value="Base Aérea Montijo">LPMT</option>
-                                        <option value="LPMU">Mogadouro</option>
-                                        <option value="LPOT">Base Aérea Ota</option>
-                                        <option value="LPOV">Base Aérea Ovar</option>
-                                        <option value="LPPM">Portimão</option>
-                                        <option value="LPPN">Proença a Nova</option>
-                                        <option value="LPPR">Porto - Sá Carneiro</option>
-                                        <option value="LPPT">Lisboa - Humberto Delgado</option>
-                                        <option value="LPSC">Santa Cruz</option>
-                                        <option value="LPSE">Seia</option>
-                                        <option value="LPSO">Ponte de Sôr</option>
-                                        <option value="LPSR">Santarém</option>
-                                        <option value="LPST">Base Aérea Sintra</option>
-                                        <option value="LPTN">Base Aérea Tancos</option>
-                                        <option value="LPVL">Maia - Vilar de Luz</option>
-                                        <option value="LPVR">Vila Real</option>
-                                        <option value="viseu">Viseu</option>
-                                        <option value="U-AIRPARK">Alentejo Air Park</option>
-                                        <option value="U-ALQUEIDAO">Alqueidão</option>
-                                        <option value="U-ATOUGUIA">Atouguia da Baleia</option>
-                                        <option value="U-AZAMBUJA">Azambuja</option>
-                                        <option value="U-BEJA">Beja UL</option>
-                                        <option value="U-BENAVENTE">Benavente</option>
-                                        <option value="U-CAB_BASTO">Cabeceiras de Basto</option>
-                                        <option value="U-CAB_VACA"> Cabeço de Vaca</option>
-                                        <option value="U-CAMPINHO">Campinho</option>
-                                        <option value="U-CASARAO">Casarão</option>
-                                        <option value="U-CERVAL">Cerval</option>
-                                        <option value="U-FAIAS">Faias</option>
-                                        <option value="U-LAGOS">Lagos</option>
-                                        <option value="U-LAMEIRA">Herdade da Lameira</option>
+                                    <select name="aerodromo_partida" class="form-control">
+                                        @foreach($aerodromos as $aerodromo)
+                                            <option value="{{$aerodromo->code}}">{{$aerodromo->nome}}</option>
+                                        @endforeach
                                     </select>
+                                    <br>
                                 </p>
                             </div>
                         </div>
+
 
                         <div class="form-group">
                             <label for="aerodromo_chegada" class="col-sm-4 col-form-label"> Aerodromo Chegada </label>
                             <div class="col-sm-10">
                                 <p>
-                                    <select name="aerodromo_chegada">
-                                        <option disabled selected="">Selecione...</option>
-                                        <option value="LPAR">Base Aérea Alverca</option>
-                                        <option value="LPAV">Base Aérea de São Jacinto - Aveiro</option>
-                                        <option value="LPBG"> Bragança</option>
-                                        <option value="LPBJ">Beja</option>
-                                        <option value="LPBR">Braga</option>
-                                        <option value="LPCB">Castelo Branco</option>
-                                        <option value="LPCH">Chaves</option>
-                                        <option value="LPCO">Coimbra - Bissaya Barreto</option>
-                                        <option value="LPCS">Cascais</option>
-                                        <option value="LPEV">Évora</option>
-                                        <option value="LPFA">Ferreira do Alentejo</option>
-                                        <option value="LPFC">Figueira de Cavaleiros</option>
-                                        <option value="LPFR">Faro</option>
-                                        <option value="LPIN">Espinho</option>
-                                        <option value="LPJF">Leiria - José Ferrinho</option>
-                                        <option value="LPLZ">Lousã</option>
-                                        <option value="LPMI">Mirandela</option>
-                                        <option value="LPMN">Amendoeira - Montemor-o-Novo</option>
-                                        <option value="LPMR"> Base Aérea Monte Real</option>
-                                        <option value="Base Aérea Montijo">LPMT</option>
-                                        <option value="LPMU">Mogadouro</option>
-                                        <option value="LPOT">Base Aérea Ota</option>
-                                        <option value="LPOV">Base Aérea Ovar</option>
-                                        <option value="LPPM">Portimão</option>
-                                        <option value="LPPN">Proença a Nova</option>
-                                        <option value="LPPR">Porto - Sá Carneiro</option>
-                                        <option value="LPPT">Lisboa - Humberto Delgado</option>
-                                        <option value="LPSC">Santa Cruz</option>
-                                        <option value="LPSE">Seia</option>
-                                        <option value="LPSO">Ponte de Sôr</option>
-                                        <option value="LPSR">Santarém</option>
-                                        <option value="LPST">Base Aérea Sintra</option>
-                                        <option value="LPTN">Base Aérea Tancos</option>
-                                        <option value="LPVL">Maia - Vilar de Luz</option>
-                                        <option value="LPVR">Vila Real</option>
-                                        <option value="viseu">Viseu</option>
-                                        <option value="U-AIRPARK">Alentejo Air Park</option>
-                                        <option value="U-ALQUEIDAO">Alqueidão</option>
-                                        <option value="U-ATOUGUIA">Atouguia da Baleia</option>
-                                        <option value="U-AZAMBUJA">Azambuja</option>
-                                        <option value="U-BEJA">Beja UL</option>
-                                        <option value="U-BENAVENTE">Benavente</option>
-                                        <option value="U-CAB_BASTO">Cabeceiras de Basto</option>
-                                        <option value="U-CAB_VACA"> Cabeço de Vaca</option>
-                                        <option value="U-CAMPINHO">Campinho</option>
-                                        <option value="U-CASARAO">Casarão</option>
-                                        <option value="U-CERVAL">Cerval</option>
-                                        <option value="U-FAIAS">Faias</option>
-                                        <option value="U-LAGOS">Lagos</option>
-                                        <option value="U-LAMEIRA">Herdade da Lameira</option>
+                                    <select name="aerodromo_chegada" class="form-control">
+                                        @foreach($aerodromos as $aerodromo)
+                                            <option value="{{$aerodromo->code}}">{{$aerodromo->nome}}</option>
+                                        @endforeach
                                     </select>
+                                    <br>
                                 </p>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="num_aterragens" class="col-sm-4 col-form-label"> Nº Aterragens </label>
                             <div class="col-sm-10">
@@ -300,11 +206,12 @@
                             <label id="natureza" for="natureza" class="col-sm-4 col-form-label"> Natureza </label>
                             <div class="col-sm-10">
                                 <p>
-                                    <select name="natureza" id="natureza">
-                                        <option disabled selected="">Selecione...</option>
-                                        <option value="T">T</option>
-                                        <option value="I">I</option>
-                                        <option value="E">E</option>
+                                    <select name="natureza" id="natureza" @error('natureza') is-invalid
+                                            @enderror onchange="mostrar(value)">
+                                        <option value="-1" disabled selected="">Selecione...</option>
+                                        <option value="T" onclick="mostrar(1);">T</option>
+                                        <option value="I" onclick="mostrar(2);">I</option>
+                                        <option value="E" onclick="mostrar(3);">E</option>
                                     </select>
                                 </p>
                             </div>
@@ -336,7 +243,7 @@
                                     Piloto</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="num_licenca_piloto" class="form-control"
-                                           id="num_licenca_piloto" placeholder="num_licenca_piloto"/>
+                                           id="num_licenca_piloto" value="{{Auth::user()->num_licenca_piloto}}"/>
                                 </div>
                             </div>
 
@@ -345,7 +252,16 @@
                                     Piloto</label>
                                 <div class="col-sm-10">
                                     <p>
-                                        <input type="text" value="PU" class="form-control" name="tipo_licenca_piloto">
+                                        <select name="tipo_licenca_piloto">
+                                            <option disabled selected="">Selecione...</option>
+                                            <option value="ALUNO-PPL(A) ">Aluno - Private Pilot License Airplane
+                                            </option>
+                                            <option value="ALUNO-PU">Aluno - Piloto de Ultraleve</option>
+                                            <option value="ATPL">Airline Transport Pilot License</option>
+                                            <option value="CPL(A)">Comercial Pilot License Airplane</option>
+                                            <option value="PPL(A)">Private Pilot License Airplane</option>
+                                            <option value="PU">Piloto de Ultraleve</option>
+                                        </select>
                                     </p>
                                 </div>
                             </div>
@@ -356,7 +272,8 @@
                                     Piloto</label>
                                 <div class="col-sm-10">
                                     <input type="date" name="validade_licenca_piloto" class="form-control"
-                                           id="validade_licenca_piloto" placeholder="validade_licenca_piloto"/>
+                                           id="validade_licenca_piloto"
+                                           value="{{Auth::user()->validade_licenca_piloto}}"/>
                                 </div>
                             </div>
 
@@ -368,7 +285,7 @@
                                 <div class="col-sm-10">
                                     <input type="text" name="num_certificado_piloto" class="form-control"
                                            id="num_certificado_piloto"
-                                           placeholder="Nº Certificado Médico Piloto"/>
+                                           value="{{Auth::user()->num_certificado_piloto}}"/>
 
                                 </div>
                             </div>
@@ -394,7 +311,8 @@
                                     Certificado Médico Piloto</label>
                                 <div class="col-sm-10">
                                     <input type="date" name="validade_certificado_piloto" class="form-control"
-                                           id="validade_certificado_piloto"/>
+                                           id="validade_certificado_piloto"
+                                           value="{{Auth::user()->validade_certificado_piloto}}"/>
                                 </div>
                             </div>
 
@@ -511,7 +429,7 @@
                                 </div>
                             @else
                                 <div class="form-group">
-                                    <label for="confirmado" class="col-sm-4 col-form-label"> confirmado </label>
+                                    <label for="confirmado" class="col-sm-4 col-form-label"> Confirmado </label>
                                     <div class="col-sm-10">
                                         <input type="hidden" name="confirmado" value="0">
                                         <p>

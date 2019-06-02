@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\User;
 use App\Aeronave;
 use App\Movimento;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use SoftDeletes;
 use App\Http\Requests\UpdateAeronave;
 use App\Http\Requests\StoreAeronave;
 use Illuminate\Support\Facades\Gate;
@@ -147,18 +146,20 @@ class AeronaveController extends Controller
         return view('socios.listaAutorizados', compact('title', 'pilotosAuto','pilotosNaoAuto','aeronave'));
 
     }
-    public function removePiloto(User $piloto)
+    public function removePiloto(Aeronave $aeronave,User $piloto)
     {
-        //  $pilotoRemovido = DB::table('aeronaves_pilotos')->where(['piloto_id','=',$piloto->id],['matricula','=',$aeronave->matricula])->get();
-        dd($piloto);
 
-      //  $pilotoRemovido->delete();
+        $pilotoRemovido = DB::table('aeronaves_pilotos')->where('matricula',$aeronave->matricula)->where('piloto_id',$piloto->id)->delete();
 
         return redirect()->back();
 
     }
+    public function acrescentaPiloto(Aeronave $aeronave,User $piloto)
+    {
+        DB::table('aeronaves_pilotos')->insert(['piloto_id' => $piloto->id,'matricula'=>$aeronave->matricula]);
+        return redirect()->back();
 
-
+    }
 
 
 }

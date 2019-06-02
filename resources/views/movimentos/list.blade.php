@@ -107,9 +107,8 @@
                             <tbody>
                             @foreach ($movimentos as $movimento)
                                 <tr>
-                                    @if((Auth::user()->id == $movimento->piloto_id && $movimento->confirmado ==0 )||
-                                     (Auth::user()->id == $movimento->instrutor_id && $movimento->confirmado ==0 )||
-                                    (Auth::user()->direcao ==1 && $movimento->confirmado ==0 ) )
+                                    @if((\Illuminate\Support\Facades\Auth::id() == $movimento->piloto_id && $movimento->confirmado==0)
+                                    || (\Illuminate\Support\Facades\Auth::id() == $movimento->instrutor_id && $movimento->confirmado==0))
 
 
                                         <td>
@@ -127,6 +126,22 @@
                                         </td>
 
                                     @endif
+
+                                    @can('direcao')
+                                        <td>
+
+                                            <a class="btn btn-sm btn-primary"
+                                               href="{{action('MovimentoController@edit',['id'=>$movimento->id])}}">Editar</a>
+
+                                            <form action="{{action('MovimentoController@destroy', ['id'=>$movimento->id])}}"
+                                                  method="POST" role="form" class="inline">
+                                                {{ method_field('DELETE') }}
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+
+                                        </td>
+                                    @endcan
                                     <td></td>
                                     <td>{{$movimento->aeronave}}</td>
                                     <td>{{$movimento->num_licenca_piloto}}</td>

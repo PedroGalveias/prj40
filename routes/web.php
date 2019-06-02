@@ -56,7 +56,6 @@ Route::get('/aeronaves/{aeronave}/precos_tempos', 'AeronaveController@precoTempo
 // Estatisticas
 Route::get('/movimentos/estatisticas', 'MovimentoController@estatisticas')->name('estatisticas');
 
-// Pendentes
-Route::get('/pendentes', 'PendentesController@index')->name('pendentes');
 
-
+//pendentes
+Route::get('/pendentes', 'UserController@pendentes')->name('pendentes');

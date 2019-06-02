@@ -27,14 +27,18 @@ class StoreSocio extends FormRequest
         return [
             'name'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
             'email'=>'required|email|unique:users,email,',
-            'nome_informal'=>'required|regex:[A-Za-zÀ-ú]',
+            'nome_informal'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
             'sexo'=>'required',
             'data_nascimento'=>'required|date',
             'nif'=>"required|unique:users,nif|numeric|max:999999999",
             'telefone'=>"required|unique:users,telefone|regex:/^\+?\d{3}(?: ?\d+)*$/",
             'endereco'=>'required',
             'tipo_socio'=>'required',
-            'file_foto'=>'nullable|image'
+            'file_foto'=>'nullable|image',
+            'direcao'=>'nullable',
+            'ativo'=>'nullable',
+            'certificado_confirmado'=>'nullable',
+            'licenca_confirmada'=>'nullable'
         ];
     }
 
@@ -42,7 +46,7 @@ class StoreSocio extends FormRequest
     {
         return [
             'name.required'=>'O nome deve ser preeenchido',
-            'name.regex'=>'O nome não deve conter números',
+            'name.regex'=>'O nome não deve conter acentos',
             'email.required'=>'O email deve ser preenchido',
             'email.email'=>'O formato do email não é válido',
             'email.unique'=>'Este email já se encontra registado',

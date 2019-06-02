@@ -110,6 +110,7 @@
                                             <th>Nº Sócio</th>
                                             <th>Nome</th>
                                             <th>Email</th>
+                                            <th>Telefone</th>
                                             <th>Tipo Sócio</th>
                                             <th>Direção</th>
                                             <th>nº de licença</th>
@@ -140,6 +141,7 @@
                                                 <td>{{$socio->num_socio}}</td>
                                                 <td>{{$socio->nome_informal}}</td>
                                                 <td>{{$socio->email}}</td>
+                                                    <td>{{$socio->telefone}}</td>
                                                 <td> @if($socio->tipo_socio == 'A')
                                                         aeromodelista
                                                     @elseif($socio->tipo_socio == 'P')

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreMovimento extends FormRequest
 {
@@ -16,37 +17,43 @@ class StoreMovimento extends FormRequest
     public function rules()
     {
 
-        return [
-            'aeronave' => 'required',
+        $rules = [
+            'aeronave' => 'required|exists:aeronaves,matricula',
             'piloto_id' => 'required',
-            'data' => 'required|date',
-            'hora_descolagem' => 'required|date',
-            'hora_aterragem' => 'required|date',
-            'tempo_voo' => 'required|numeric|max:999999999',
-            'aerodromo_partida' => 'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'aerodromo_chegada' => 'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
-            'num_aterragens' => 'required|numeric|max:999999999',
-            'num_descolagens' => 'required|numeric|max:999999999',
-            'num_diario' => 'required',
-            'num_servico' => 'required',
-            'conta_horas_inicio' => 'required',
-            'conta_horas_fim' => 'required',
-            'num_pessoas' => 'required',
-            'modo_pagamento' => 'required',
-            'preco_voo' => 'required',
-            'num_recibo' => 'required',
+            'data' => 'required|date_format:Y-m-d',
+            'hora_descolagem' => 'required',
+            'hora_aterragem' => 'required',
+            'tempo_voo' => 'required|numeric|min:1',
+            'aerodromo_partida' => 'required|exists:aerodromos,code',
+            'aerodromo_chegada' => 'required|exists:aerodromos,code',
+            'num_aterragens' => 'required|integer|min:1',
+            'num_descolagens' => 'required|integer|min:1',
+            'num_diario' => 'required|integer|min:1',
+            'num_servico' => 'required|integer|min:1',
+            'conta_horas_inicio' => 'required|integer|min:1',
+            'conta_horas_fim' => 'required|integer|gt:conta_horas_inicio|min:1',
+            'num_pessoas' => 'required|integer|min:1',
+            'modo_pagamento' => ['required', Rule::in(['N', 'T', 'P','M'])],
+            'preco_voo' => 'required|integer|min:1',
+            'num_recibo' => 'required|max:20',
             'observacoes' => 'nullable',
-            'natureza' => 'required',
+            'natureza' => ['required', Rule::in(['T', 'I', 'E'])],
             'num_licenca_piloto' => 'required|numeric|max:999999999',
             'validade_licenca_piloto' => 'required|date',
             'num_certificado_piloto' => 'required',
-            'validade_certificado_piloto' => 'required  |date',
+            'validade_certificado_piloto' => 'required|date',
+            'tipo_licenca_piloto' => 'required',
+            'classe_certificado_piloto' => 'required',
+            'confirmado' => 'required',
             //INSTRUTOR
             'num_certificado_instrutor' => 'nullable',
             'validade_licenca_instrutor' => 'nullable|date',
+            'tipo_instrucao' => ['nullable', Rule::in(['D', 'S'])],
             'instrutor_id' => 'nullable|numeric',
             'validade_certificado_instrutor' => 'nullable|date',
         ];
+
+        return $rules;
     }
 
     public function messages()

@@ -19,7 +19,7 @@ class UpdateSocio extends FormRequest
     {
         $id = (int)$this->route()->parameters()['socio']->id;
         return [
-            'name'=>'required', //|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
+            'name'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
             'email'=>'required|email|unique:users,email,'.$id,
             'nome_informal'=>'required|regex:/^([a-zA-Z]+\s)*[a-zA-Z]+$/',
             'sexo'=>'required',
@@ -28,7 +28,11 @@ class UpdateSocio extends FormRequest
             'telefone'=>'required|unique:users,telefone,'.$id, //'|regex:/^\+?\d{3}(?: ?\d+)*$/',
             'endereco'=>'required',
             'tipo_socio'=>'required',
-            'file_foto'=>'nullable|image'
+            'file_foto'=>'nullable|image',
+            'direcao'=>'required',
+            'ativo'=>'nullable',
+            'certificado_confirmado'=>'nullable',
+            'licenca_confirmada'=>'nullable'
         ];
     }
 
@@ -36,7 +40,7 @@ class UpdateSocio extends FormRequest
     {
         return [
             'name.required'=>'O nome deve ser preeenchido',
-            'name.regex'=>'O nome não deve conter números',
+            'name.regex'=>'O nome não deve conter acentos',
             'email.required'=>'O email deve ser preenchido',
             'email.email'=>'O formato do email não é válido',
             'email.unique'=>'Este email já se encontra registado',

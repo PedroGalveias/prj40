@@ -88,9 +88,6 @@
                                 <a class="dropdown-item"
                                    href="{{action('UserController@edit',['socio' => Auth::user()->id])}}">Perfil</a>
                                 <a class="dropdown-item" href="{{action('HomeController@index')}}">Home</a>
-                                @can('direcao', auth()->user())
-                                    <a class="dropdown-item" href="">Preço-hora aeronave</a>
-                                @endcan
                                 <a class="dropdown-item" href="{{action('UserController@showChangePasswordForm')}}">Alterar
                                     palavra-passe</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
